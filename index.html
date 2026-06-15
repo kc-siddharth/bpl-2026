@@ -30,7 +30,7 @@
   .meta button:hover{border-color:var(--gold)}
 
   /* two lists side by side */
-  .lists{display:flex;gap:26px}
+  .lists{display:flex;gap:0}
   .listcol{flex:1;min-width:0}
   .col-cap{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;
     font-weight:700;margin:0 0 4px 2px}
@@ -71,7 +71,12 @@
     .dot.on{background:var(--gold);width:24px;border-radius:5px}
     .swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px}
   }
-  @media(min-width:641px){ .swipehint{display:none} }
+  @media(min-width:641px){
+    .swipehint{display:none}
+    .wrap{padding-left:28px;padding-right:28px}
+    .listcol{padding-right:40px}
+    .listcol+.listcol{padding-right:0;padding-left:40px;border-left:1px solid var(--line)}
+  }
 </style>
 </head>
 <body>
