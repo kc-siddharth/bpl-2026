@@ -11,7 +11,7 @@
   body{margin:0;background:var(--bg);color:var(--txt);line-height:1.5;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased}
-  .wrap{max-width:720px;margin:0 auto;padding:26px 16px 70px}
+  .wrap{max-width:820px;margin:0 auto;padding:26px 16px 70px}
   header{text-align:center;margin-bottom:4px}
   .kicker{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:11px;font-weight:700}
   h1{font-size:28px;margin:6px 0 2px;font-weight:800;letter-spacing:-.5px}
@@ -22,32 +22,56 @@
     padding:3px 10px;border-radius:999px;white-space:nowrap}
   .through .det{color:var(--txt);font-weight:600;font-size:14.5px}
   .through .sub{color:var(--muted);font-size:12.5px;width:100%}
-  .meta{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 8px}
+  .meta{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 10px}
   .meta .live{font-size:12px;color:var(--muted)}
   .meta .live b{color:var(--green)}
   .meta button{background:var(--panel);color:var(--txt);border:1px solid var(--line);
     border-radius:8px;padding:6px 12px;font-size:12.5px;cursor:pointer;font-weight:600}
   .meta button:hover{border-color:var(--gold)}
-  table{width:100%;border-collapse:collapse;font-size:14.5px}
-  th,td{padding:10px 10px;border-bottom:1px solid var(--line);text-align:left}
-  th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+
+  /* two lists side by side */
+  .lists{display:flex;gap:26px}
+  .listcol{flex:1;min-width:0}
+  .col-cap{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;
+    font-weight:700;margin:0 0 4px 2px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:8px 8px;border-bottom:1px solid var(--line);text-align:left}
+  th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
   td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
   td.net{font-weight:700}
   .pos{color:var(--green)} .neg{color:var(--red)}
-  .rk{color:var(--muted);width:42px;font-weight:700;text-align:center}
+  .rk{color:var(--muted);width:34px;font-weight:700;text-align:center}
   tr.top1 td{background:rgba(244,198,74,.10)}
-  tr.top1 .rk,tr.top2 .rk,tr.top3 .rk{font-size:17px}
+  tr.top1 .rk,tr.top2 .rk,tr.top3 .rk{font-size:16px}
   .player{font-weight:600}
   tbody tr:hover td{background:rgba(255,255,255,.025)}
   .acc{color:var(--muted)}
-  footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:26px;line-height:1.8}
+
+  /* carousel dots (mobile only) */
+  .dots{display:none}
+
+  footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:24px;line-height:1.8}
   footer a{color:var(--gold);text-decoration:none;font-weight:600}
   footer a:hover{text-decoration:underline}
   #status{text-align:center;padding:60px 20px;color:var(--muted)}
   .spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--gold);
     border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 14px}
   @keyframes sp{to{transform:rotate(360deg)}}
-  @media(max-width:520px){ td.hidem,th.hidem{display:none} h1{font-size:23px} }
+
+  /* MOBILE: turn the two lists into a swipeable carousel */
+  @media(max-width:640px){
+    h1{font-size:23px}
+    .lists{gap:0;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+      scrollbar-width:none}
+    .lists::-webkit-scrollbar{display:none}
+    .listcol{flex:0 0 100%;scroll-snap-align:start;padding:0 2px}
+    .dots{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:16px}
+    .dot{width:9px;height:9px;border-radius:50%;background:var(--line);border:none;cursor:pointer;
+      padding:0;transition:width .2s,background .2s}
+    .dot.on{background:var(--gold);width:24px;border-radius:5px}
+    .swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:8px}
+  }
+  @media(min-width:641px){ .swipehint{display:none} }
 </style>
 </head>
 <body>
@@ -76,14 +100,14 @@ const CONFIG = {
       <div class="live" id="liveTag"></div>
       <button onclick="location.reload()">↻ Refresh</button>
     </div>
-    <table>
-      <thead><tr>
-        <th class="rk">#</th><th>Player</th>
-        <th class="num hidem">Played</th><th class="num hidem">Correct</th>
-        <th class="num">Acc</th><th class="num">Net (Rs)</th>
-      </tr></thead>
-      <tbody id="rows"></tbody>
-    </table>
+
+    <div class="lists" id="lists">
+      <div class="listcol" id="col0"></div>
+      <div class="listcol" id="col1"></div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="swipehint">Swipe to see ranks 44–85 →</div>
+
     <footer id="foot"></footer>
   </div>
 </div>
@@ -97,8 +121,7 @@ function parseCSV(text){const rows=[];let row=[],f='',q=false;for(let i=0;i<text
   if(f.length||row.length){row.push(f);rows.push(row);}return rows;}
 const idx=(h,n)=>h.findIndex(x=>x.trim().toLowerCase()===n.toLowerCase());
 
-/* snapshot fallback (through Match 13) so the page renders even when opened from disk.
-   When hosted, live data from the sheet replaces this automatically. */
+/* snapshot fallback (through Match 13); live data replaces it when hosted */
 const SNAP = {
  players:[["Sahil Bhargava",13,7,178.51],["Vipin",13,6,171.63],["Anant",9,5,139.4],["Abhishek Kumar",11,5,135.09],["Pranav Gour",9,4,125.09],["Aditya Khemka",13,3,115.95],["Asha Kumar",11,8,104.13],["Raghav",13,3,92.75],["Abhinav Benjamin",13,5,83],["Shobhit",13,7,79.5],["Cameron Rogers",9,5,70.19],["Smriti",13,7,57.33],["Amalta Gupta",13,8,56.06],["Praneet Shekhar",13,6,55.69],["Yashovardhan Bhagat",13,6,55.36],["Deeksha",13,3,50.5],["Vidur Dutt",13,8,45.49],["Kc Sachin",13,5,35.55],["Atul",13,6,35.19],["Hevin",13,7,32.66],["Aiswarya",13,8,31.36],["Raashi",13,8,31.36],["Shalu",13,6,25.88],["Prem",13,7,23.01],["Vaibhav Chadha",13,4,19.01],["Josh Parker Allen",13,7,18.43],["Miraj",9,5,17.41],["Kc Siddharth",13,6,14.93],["Abhishek Dubey",13,7,13.7],["Abhishek Shah",13,7,10.9],["Megh",13,7,9.34],["Vibhuti",13,7,6.18],["Arron Dsilva",13,7,6.09],["Hamza",13,7,6.09],["Jay Alangad",13,7,4.59],["Ninisha",13,7,0],["Nachiket",13,2,-1.69],["Amit Vaid",11,5,-2.81],["Anirudh Valiathan",13,7,-3.22],["Kartish",13,6,-8.26],["Akshay Bhambure",13,6,-8.26],["Shikshit",13,6,-11.27],["Krishna",13,6,-11.35],["Aditya Venkateshan",13,5,-13.32],["Shirali",13,6,-14.31],["Siddharth Salian",13,6,-17.66],["Karan",13,6,-19.1],["Aaryan Sharma",13,6,-20.66],["Abhijeet",13,5,-20.9],["Kc Swetha",11,4,-21.47],["Shourya Shukla",13,4,-22.57],["Leonard",9,3,-27.03],["Sheel Dwivedi",13,6,-28.41],["Sharan",13,6,-30],["Vaibhav Dixit",13,6,-30],["Simon",13,5,-33.43],["Akash Rau",13,5,-38.04],["Aditya Dot",13,5,-42.62],["Mohan",13,5,-42.62],["Rahul",13,5,-42.62],["Onam",13,5,-42.72],["Aditya Chauhan",9,3,-45.45],["Sneha Alangad",9,3,-45.45],["Mayank",13,5,-46.07],["Surabhi Anand",13,5,-47.66],["Apuroop",13,4,-47.77],["Sreeradh Radhakrishnan",11,4,-48.01],["Nuri",13,4,-50.87],["Ashish",11,2,-53.23],["Jasper",13,5,-55.18],["Raphael",13,5,-55.18],["Shubham Agarwal",13,5,-55.18],["Philipp",13,5,-55.18],["Surya Prakash",13,4,-55.7],["Vidya",13,4,-60.28],["Abhimanyu",13,4,-61.97],["Siddharth Jain",13,4,-68.01],["Himanshu Shekhar",13,3,-76.34],["Tanima",9,1,-77.42],["Medha Kumar",11,1,-83.23],["Susovan",13,3,-85.42],["Lakshmi",13,2,-104.59],["Ambarish",13,1,-104.81]],
  last:{n:13,date:"15 Jun",home:"Spain",away:"Cape Verde"}, settled:13
@@ -140,6 +163,33 @@ async function load(){
   render(players,SNAP.last,SNAP.settled,false);
 }
 
+const medal=['🥇','🥈','🥉'];
+function buildTable(slice,rankStart){
+  const rows=slice.map((p,i)=>{const rank=rankStart+i;const cls=rank<=3?'top'+rank:'';
+    return `<tr class="${cls}">
+      <td class="rk">${rank<=3?medal[rank-1]:rank}</td>
+      <td class="player">${p.name}</td>
+      <td class="num acc">${p.acc.toFixed(0)}%</td>
+      <td class="num net ${p.net>=0?'pos':'neg'}">${fmt(p.net)}</td></tr>`;}).join('');
+  return `<div class="col-cap">Ranks ${rankStart}–${rankStart+slice.length-1}</div>
+    <table><thead><tr><th class="rk">#</th><th>Player</th>
+      <th class="num">Acc</th><th class="num">Net (Rs)</th></tr></thead>
+      <tbody>${rows}</tbody></table>`;
+}
+
+function setupCarousel(){
+  const lists=document.getElementById('lists'), dots=document.getElementById('dots');
+  dots.innerHTML='<button class="dot on" data-i="0"></button><button class="dot" data-i="1"></button>';
+  const dotEls=[...dots.children];
+  dotEls.forEach(d=>d.onclick=()=>lists.scrollTo({left:(+d.dataset.i)*lists.clientWidth,behavior:'smooth'}));
+  const hint=document.querySelector('.swipehint');
+  lists.addEventListener('scroll',()=>{
+    const i=Math.round(lists.scrollLeft/lists.clientWidth);
+    dotEls.forEach((d,j)=>d.classList.toggle('on',j===i));
+    if(hint) hint.style.visibility = i===0 ? 'visible':'hidden';
+  });
+}
+
 function render(players,last,settled,live){
   document.getElementById('status').style.display='none';
   document.getElementById('board').style.display='block';
@@ -154,20 +204,15 @@ function render(players,last,settled,live){
     : `Saved snapshot (through Match ${last.n}) — host online for live updates`;
 
   const ranked=[...players].sort((a,b)=>b.net-a.net);
-  const medal=['🥇','🥈','🥉'];
-  document.getElementById('rows').innerHTML=ranked.map((p,i)=>`
-    <tr class="${i<3?'top'+(i+1):''}">
-      <td class="rk">${i<3?medal[i]:i+1}</td>
-      <td class="player">${p.name}</td>
-      <td class="num hidem">${p.gp}</td>
-      <td class="num hidem">${p.correct}</td>
-      <td class="num acc">${p.acc.toFixed(0)}%</td>
-      <td class="num net ${p.net>=0?'pos':'neg'}">${fmt(p.net)}</td>
-    </tr>`).join('');
+  const half=Math.ceil(ranked.length/2);
+  document.getElementById('col0').innerHTML=buildTable(ranked.slice(0,half),1);
+  document.getElementById('col1').innerHTML=buildTable(ranked.slice(half),half+1);
+  const hint=document.querySelector('.swipehint');
+  if(hint) hint.textContent=`Swipe to see ranks ${half+1}–${ranked.length} →`;
+  setupCarousel();
 
   document.getElementById('foot').innerHTML=
-    `Rs.10 per game · winners split the losers' pot · settled once at the end.<br>`+
-    `<a href="${CONFIG.REPORT_LINK}">View the full data report →</a>`;
+    `Rs.10 per game · winners split the losers' pot · settled once at the end.`;
 }
 load();
 </script>
