@@ -19,6 +19,10 @@
   .stand{color:var(--gold);font-size:15px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;margin-top:8px}
   .hmeta{text-align:right;color:var(--muted);font-size:13px;white-space:nowrap}
   .hmeta .g{color:var(--txt);font-weight:600}
+  .refresh{margin-top:9px;background:transparent;color:var(--muted);border:1px solid var(--line);
+    border-radius:8px;padding:5px 13px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+  .refresh:hover{border-color:var(--gold);color:var(--txt)}
+  .refresh:disabled{opacity:.55;cursor:default}
   .rule{height:3px;background:var(--gold);border-radius:2px;margin:16px 0 22px;opacity:.9}
 
   /* lists */
@@ -88,6 +92,7 @@ const CONFIG = {
     <div class="hmeta">
       <div class="g" id="metaGames">&nbsp;</div>
       <div id="metaDate">&nbsp;</div>
+      <button class="refresh" id="refreshBtn" onclick="refresh(this)">↻ Refresh</button>
     </div>
   </div>
   <div class="rule"></div>
@@ -118,6 +123,7 @@ function parseCSV(text){const rows=[];let row=[],f='',q=false;for(let i=0;i<text
   else{if(c==='"')q=true;else if(c===','){row.push(f);f='';}else if(c==='\n'){row.push(f);rows.push(row);row=[];f='';}else if(c==='\r'){}else f+=c;}}
   if(f.length||row.length){row.push(f);rows.push(row);}return rows;}
 const idx=(h,n)=>h.findIndex(x=>x.trim().toLowerCase()===n.toLowerCase());
+const bust=u=>u+(u.includes('?')?'&':'?')+'_='+Date.now();   // cache-bust so refresh pulls fresh data
 
 /* snapshot fallback (through Match 13); live data replaces it when hosted */
 const SNAP = {
@@ -149,8 +155,8 @@ async function load(){
   if(CONFIG.STANDINGS_CSV && CONFIG.FIXTURES_CSV){
     try{
       const [s,f]=await Promise.all([
-        fetch(CONFIG.STANDINGS_CSV).then(r=>r.text()),
-        fetch(CONFIG.FIXTURES_CSV).then(r=>r.text())]);
+        fetch(bust(CONFIG.STANDINGS_CSV)).then(r=>r.text()),
+        fetch(bust(CONFIG.FIXTURES_CSV)).then(r=>r.text())]);
       const players=readStandings(parseCSV(s));
       const {last,settled}=readLast(parseCSV(f));
       if(players.length && last){ return render(players,last,settled,true); }
@@ -158,6 +164,20 @@ async function load(){
   }
   const players=SNAP.players.map(p=>({name:p[0],gp:p[1],correct:p[2],net:p[3],acc:p[1]?p[2]/p[1]*100:0})).filter(p=>p.gp>0);
   render(players,SNAP.last,SNAP.settled,false);
+}
+
+async function refresh(btn){
+  if(!(CONFIG.STANDINGS_CSV && CONFIG.FIXTURES_CSV)) return;
+  const label=btn.textContent; btn.disabled=true; btn.textContent='Refreshing…';
+  try{
+    const [s,f]=await Promise.all([
+      fetch(bust(CONFIG.STANDINGS_CSV)).then(r=>r.text()),
+      fetch(bust(CONFIG.FIXTURES_CSV)).then(r=>r.text())]);
+    const players=readStandings(parseCSV(s));
+    const {last,settled}=readLast(parseCSV(f));
+    if(players.length && last) render(players,last,settled,true);
+  }catch(e){}
+  btn.textContent=label; btn.disabled=false;
 }
 
 function buildColumn(slice,rankStart){
