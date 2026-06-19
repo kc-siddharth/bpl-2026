@@ -44,6 +44,18 @@
   .c-net.pos{color:var(--green)} .c-net.neg{color:var(--red)}
 
   .dots{display:none}
+
+  /* rank climbers */
+  #climbers{display:none;margin:2px 0 28px}
+  .ctitle{font-size:19px;font-weight:800;letter-spacing:-.3px;margin:0 0 10px}
+  .csince{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0}
+  .crow{display:flex;align-items:center;padding:9px 8px;border-bottom:1px solid var(--line)}
+  .crow .cpl{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .crow .cmv{flex:0 0 90px;text-align:right;color:var(--green);font-weight:700;font-variant-numeric:tabular-nums}
+  .crow .cto{flex:0 0 84px;text-align:right;font-variant-numeric:tabular-nums}
+  .crow.chead span{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+  .crow.chead .cmv{color:var(--muted)}
+
   footer{color:var(--muted);font-size:12.5px;margin-top:24px}
   #status{text-align:center;padding:70px 20px;color:var(--muted)}
   .spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--gold);
@@ -100,6 +112,7 @@ const CONFIG = {
   <div id="status"><div class="spin"></div>Loading the latest standings…</div>
 
   <div id="board" style="display:none">
+    <div id="climbers"></div>
     <div class="lists" id="lists">
       <div class="listcol" id="col0"></div>
       <div class="listcol" id="col1"></div>
@@ -150,6 +163,16 @@ function readLast(rows){
     if(!last||n>last.n) last={n,date:(r[ci.d]||'').trim()};}
   return {last,settled};
 }
+function readSnapshot(rows){
+  const h=rows[0];
+  const pi=idx(h,'Snap Player'), ri=idx(h,'Snap Rank'), di=idx(h,'Snap Date');
+  if(pi<0||ri<0) return {prev:{},date:''};
+  const prev={};
+  for(let i=1;i<rows.length;i++){const r=rows[i];
+    if(pi<r.length && r[pi] && r[pi].trim()){const rk=num(r[ri]); if(rk!==null) prev[r[pi].trim()]=rk;}}
+  const date=(di>=0 && rows[1] && rows[1][di])?rows[1][di].trim():'';
+  return {prev,date};
+}
 
 async function load(){
   if(CONFIG.STANDINGS_CSV && CONFIG.FIXTURES_CSV){
@@ -157,13 +180,15 @@ async function load(){
       const [s,f]=await Promise.all([
         fetch(bust(CONFIG.STANDINGS_CSV)).then(r=>r.text()),
         fetch(bust(CONFIG.FIXTURES_CSV)).then(r=>r.text())]);
-      const players=readStandings(parseCSV(s));
+      const sr=parseCSV(s);
+      const players=readStandings(sr);
+      const snap=readSnapshot(sr);
       const {last,settled}=readLast(parseCSV(f));
-      if(players.length && last){ return render(players,last,settled,true); }
+      if(players.length && last){ return render(players,last,settled,true,snap); }
     }catch(e){/* blocked (local file) -> snapshot */}
   }
   const players=SNAP.players.map(p=>({name:p[0],gp:p[1],correct:p[2],net:p[3],acc:p[1]?p[2]/p[1]*100:0})).filter(p=>p.gp>0);
-  render(players,SNAP.last,SNAP.settled,false);
+  render(players,SNAP.last,SNAP.settled,false,{prev:{},date:''});
 }
 
 async function refresh(btn){
@@ -173,9 +198,11 @@ async function refresh(btn){
     const [s,f]=await Promise.all([
       fetch(bust(CONFIG.STANDINGS_CSV)).then(r=>r.text()),
       fetch(bust(CONFIG.FIXTURES_CSV)).then(r=>r.text())]);
-    const players=readStandings(parseCSV(s));
+    const sr=parseCSV(s);
+    const players=readStandings(sr);
+    const snap=readSnapshot(sr);
     const {last,settled}=readLast(parseCSV(f));
-    if(players.length && last) render(players,last,settled,true);
+    if(players.length && last) render(players,last,settled,true,snap);
   }catch(e){}
   btn.textContent=label; btn.disabled=false;
 }
@@ -203,7 +230,7 @@ function setupCarousel(){
   });
 }
 
-function render(players,last,settled,live){
+function render(players,last,settled,live,snap){
   document.getElementById('status').style.display='none';
   document.getElementById('board').style.display='block';
 
@@ -211,6 +238,7 @@ function render(players,last,settled,live){
   document.getElementById('metaDate').textContent=dateFull(last.date);
 
   const ranked=[...players].sort((a,b)=>b.net-a.net);
+  renderClimbers(ranked, snap);
   const half=Math.ceil(ranked.length/2);
   document.getElementById('col0').innerHTML=buildColumn(ranked.slice(0,half),1);
   document.getElementById('col1').innerHTML=buildColumn(ranked.slice(half),half+1);
@@ -221,6 +249,24 @@ function render(players,last,settled,live){
   document.getElementById('foot').innerHTML=
     `Ranked by net winnings · ${ranked.length} players in`+
     (live?` · <span style="color:var(--green)">live</span>`:` · saved snapshot`);
+}
+
+function renderClimbers(ranked, snap){
+  const el=document.getElementById('climbers');
+  if(!el) return;
+  if(!snap || !snap.prev || !Object.keys(snap.prev).length){ el.style.display='none'; el.innerHTML=''; return; }
+  const cur={}; ranked.forEach((p,i)=>cur[p.name]=i+1);
+  const climbers=Object.keys(snap.prev)
+    .filter(n=>cur[n])
+    .map(n=>({name:n, move:snap.prev[n]-cur[n], to:cur[n]}))
+    .filter(c=>c.move>0)
+    .sort((a,b)=>b.move-a.move || a.to-b.to)
+    .slice(0,5);
+  if(!climbers.length){ el.style.display='none'; el.innerHTML=''; return; }
+  el.style.display='block';
+  const head=`<div class="crow chead"><span class="cpl">Player</span><span class="cmv">Move</span><span class="cto">To rank</span></div>`;
+  const body=climbers.map(c=>`<div class="crow"><span class="cpl">${c.name}</span><span class="cmv">▲ ${c.move}</span><span class="cto">${c.to}</span></div>`).join('');
+  el.innerHTML=`<div class="ctitle">Top 5 rank climbers${snap.date?` <span class="csince">since ${snap.date}</span>`:''}</div>`+head+body;
 }
 load();
 </script>
