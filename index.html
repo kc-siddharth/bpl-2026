@@ -45,16 +45,19 @@
 
   .dots{display:none}
 
-  /* rank climbers */
-  #climbers{display:none;margin:2px 0 28px}
-  .ctitle{font-size:19px;font-weight:800;letter-spacing:-.3px;margin:0 0 10px}
-  .csince{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0}
-  .crow{display:flex;align-items:center;padding:9px 8px;border-bottom:1px solid var(--line)}
+  /* rank movers (climbers + fallers) */
+  #climbers{display:none;margin:2px 0 30px}
+  .csince{font-size:12px;color:var(--muted);font-weight:600;margin:0 0 12px}
+  .movers{display:flex;gap:44px}
+  .mcard{flex:1;min-width:0}
+  .ctitle{font-size:17px;font-weight:800;letter-spacing:-.3px;margin:0 0 9px}
+  .crow{display:flex;align-items:center;padding:9px 6px;border-bottom:1px solid var(--line)}
   .crow .cpl{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .crow .cmv{flex:0 0 90px;text-align:right;color:var(--green);font-weight:700;font-variant-numeric:tabular-nums}
-  .crow .cto{flex:0 0 84px;text-align:right;font-variant-numeric:tabular-nums}
+  .crow .cmv{flex:0 0 72px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .crow .cmv.up{color:var(--green)} .crow .cmv.down{color:var(--red)}
+  .crow .cto{flex:0 0 68px;text-align:right;font-variant-numeric:tabular-nums}
   .crow.chead span{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
-  .crow.chead .cmv{color:var(--muted)}
+  @media(max-width:640px){ .movers{flex-direction:column;gap:22px} }
 
   footer{color:var(--muted);font-size:12.5px;margin-top:24px}
   #status{text-align:center;padding:70px 20px;color:var(--muted)}
@@ -256,17 +259,22 @@ function renderClimbers(ranked, snap){
   if(!el) return;
   if(!snap || !snap.prev || !Object.keys(snap.prev).length){ el.style.display='none'; el.innerHTML=''; return; }
   const cur={}; ranked.forEach((p,i)=>cur[p.name]=i+1);
-  const climbers=Object.keys(snap.prev)
-    .filter(n=>cur[n])
-    .map(n=>({name:n, move:snap.prev[n]-cur[n], to:cur[n]}))
-    .filter(c=>c.move>0)
-    .sort((a,b)=>b.move-a.move || a.to-b.to)
-    .slice(0,5);
-  if(!climbers.length){ el.style.display='none'; el.innerHTML=''; return; }
+  const moves=Object.keys(snap.prev).filter(n=>cur[n]).map(n=>({name:n, move:snap.prev[n]-cur[n], to:cur[n]}));
+  const climbers=moves.filter(c=>c.move>0).sort((a,b)=>b.move-a.move || a.to-b.to).slice(0,5);
+  const fallers =moves.filter(c=>c.move<0).sort((a,b)=>a.move-b.move || a.to-b.to).slice(0,5);
+  if(!climbers.length && !fallers.length){ el.style.display='none'; el.innerHTML=''; return; }
   el.style.display='block';
-  const head=`<div class="crow chead"><span class="cpl">Player</span><span class="cmv">Move</span><span class="cto">To rank</span></div>`;
-  const body=climbers.map(c=>`<div class="crow"><span class="cpl">${c.name}</span><span class="cmv">▲ ${c.move}</span><span class="cto">${c.to}</span></div>`).join('');
-  el.innerHTML=`<div class="ctitle">Top 5 rank climbers${snap.date?` <span class="csince">since ${snap.date}</span>`:''}</div>`+head+body;
+  const card=(title,list,cls,arrow)=>{
+    if(!list.length) return '';
+    const head=`<div class="crow chead"><span class="cpl">Player</span><span class="cmv">Move</span><span class="cto">To rank</span></div>`;
+    const body=list.map(c=>`<div class="crow"><span class="cpl">${c.name}</span><span class="cmv ${cls}">${arrow} ${Math.abs(c.move)}</span><span class="cto">${c.to}</span></div>`).join('');
+    return `<div class="mcard"><div class="ctitle">${title}</div>${head}${body}</div>`;
+  };
+  el.innerHTML=(snap.date?`<div class="csince">Movement since ${snap.date}</div>`:'')+
+    `<div class="movers">`+
+    card('Top 5 rank climbers',climbers,'up','▲')+
+    card('Top 5 rank fallers',fallers,'down','▼')+
+    `</div>`;
 }
 load();
 </script>
