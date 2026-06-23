@@ -17,6 +17,8 @@
   .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
   .brand{display:flex;align-items:center;gap:14px}
   .kcmark{width:54px;height:54px;flex:none;display:block}
+  .backhub{display:inline-flex;align-items:center;gap:5px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:5px 13px;margin-bottom:18px;transition:border-color .15s,color .15s}
+  .backhub:hover{border-color:var(--gold);color:var(--gold)}
   h1{font-size:34px;line-height:1.04;margin:0;font-weight:800;letter-spacing:-.5px;text-transform:uppercase}
   .stand{color:var(--gold);font-size:15px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;margin-top:8px}
   .hmeta{text-align:right;color:var(--muted);font-size:13px;white-space:nowrap}
@@ -102,6 +104,7 @@ const CONFIG = {
 </script>
 
 <div class="wrap">
+  <a class="backhub" href="index.html">‹ All games</a>
   <div class="head-row">
     <div class="brand">
       <img class="kcmark" src="branding/kc_monogram.png" alt="KC">

@@ -17,6 +17,10 @@
     -webkit-font-smoothing:antialiased;line-height:1.5}
   .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 80px}
   header.top{text-align:center;padding:18px 0 8px}
+  .titlerow{display:flex;align-items:center;justify-content:center;gap:12px}
+  .kcmark{width:50px;height:50px;flex:none;display:block}
+  .backhub{display:inline-flex;align-items:center;gap:5px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:5px 13px;margin-bottom:18px;transition:border-color .15s,color .15s}
+  .backhub:hover{border-color:var(--gold);color:var(--gold)}
   .kicker{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:12px;font-weight:700}
   h1{font-size:34px;margin:8px 0 4px;font-weight:800;letter-spacing:-.5px}
   .sub{color:var(--muted);font-size:14px}
@@ -55,6 +59,29 @@
   .twocol{display:grid;grid-template-columns:1fr 1fr;gap:24px}
   .note{color:var(--muted);font-size:12.5px;margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
   footer{text-align:center;color:var(--muted);font-size:12.5px;margin-top:34px}
+  /* voting section */
+  .vsel{background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:10px;
+    padding:9px 12px;font-size:14px;font-weight:600;width:100%;max-width:340px;margin-bottom:16px;font-family:inherit}
+  .vprow{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+  .vstat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px 16px;flex:1;min-width:110px}
+  .vstat .vv{font-size:20px;font-weight:800;letter-spacing:-.4px}
+  .vstat .vl{font-size:11px;color:var(--muted);margin-top:3px}
+  .vhwrap{margin-top:4px}
+  .vhlab{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:8px}
+  .vhist{display:flex;flex-wrap:wrap;gap:6px}
+  .vchip{font-size:11.5px;border:1px solid var(--line);border-radius:7px;padding:5px 8px;background:var(--panel2);white-space:nowrap}
+  .vchip .vp{font-weight:800}
+  .vchip.win{border-color:rgba(52,220,151,.55)}
+  .vchip.loss{opacity:.6}
+  .vsim{margin-top:16px;color:var(--muted);font-size:13.5px}
+  .vsim b{color:var(--txt)}
+  .vjourney{background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);
+    border-left:3px solid var(--gold);border-radius:10px;padding:14px 16px;margin:0 0 16px;
+    font-size:14.5px;line-height:1.55;color:var(--txt)}
+  .vsub{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:8px}
+  .vsub span{text-transform:none;letter-spacing:0;font-weight:500}
+  .vlrow{display:flex;justify-content:space-between;padding:8px 4px;border-bottom:1px solid var(--line);font-size:14px}
+  .vlrow .vn{font-weight:600} .vlrow .vc{color:var(--gold);font-weight:700;font-variant-numeric:tabular-nums}
   #status{max-width:680px;margin:60px auto;text-align:center;background:var(--panel);
     border:1px solid var(--line);border-radius:16px;padding:34px}
   #status h3{margin:0 0 8px;font-size:20px}
@@ -82,15 +109,17 @@
 const CONFIG = {
   STANDINGS_CSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=338141506&single=true&output=csv",
   FIXTURES_CSV:  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=1376924317&single=true&output=csv",
+  VOTES_CSV:     "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=2105139103&single=true&output=csv",
   THROUGH_NOTE:  "Group stage · Rs.10 a game · winners split the losers' pot"
 };
 </script>
 
 <div class="wrap">
 
+  <a class="backhub" href="index.html">‹ All games</a>
   <header class="top">
     <div class="kicker">Betting Premier League · World Cup 2026</div>
-    <h1 id="h1">The Story So Far</h1>
+    <div class="titlerow"><img class="kcmark" src="branding/kc_monogram.png" alt="KC"><h1 id="h1">The Story So Far</h1></div>
     <div class="sub" id="subline"></div>
   </header>
 
@@ -134,6 +163,46 @@ const CONFIG = {
       <h2>The nights the room got it wrong</h2>
       <p class="lede">The four costliest traps so far — the fewest winners, the fattest payouts.</p>
       <div class="cards" id="upsetCards"></div>
+    </section>
+
+    <section class="vote-sec">
+      <span class="tag">Hot &amp; Cold</span>
+      <h2>Streaks — the heaters and the slumps</h2>
+      <p class="lede">The longest unbeaten runs and the roughest losing spells of the tournament so far.</p>
+      <div class="twocol">
+        <div>
+          <div class="vsub">Longest winning streaks <span>— correct calls in a row</span></div>
+          <div id="winStreaks"></div>
+        </div>
+        <div>
+          <div class="vsub">Longest losing streaks <span>— losses in a row</span></div>
+          <div id="lossStreaks"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="vote-sec">
+      <span class="tag">Voting Profiles</span>
+      <h2>How each player votes</h2>
+      <p class="lede">Pick a player to see their style, their full pick history, and who they vote most like.</p>
+      <select id="vplayer" class="vsel"></select>
+      <div id="vprofile"></div>
+    </section>
+
+    <section class="vote-sec">
+      <span class="tag">Crowd vs Contrarians</span>
+      <h2>The wisdom of the crowd — and who fights it</h2>
+      <p class="lede" id="crowdLede"></p>
+      <div class="twocol">
+        <div>
+          <div class="vsub">Sharpest contrarians <span>— correct calls against the majority</span></div>
+          <div id="contrList"></div>
+        </div>
+        <div>
+          <div class="vsub">Biggest mavericks <span>— vote least like everyone else</span></div>
+          <div id="mavList"></div>
+        </div>
+      </div>
     </section>
 
     <section>
@@ -193,12 +262,30 @@ async function load(){
       ]);
       const players = readStandings(parseCSV(sRaw));
       const matches = readFixtures(parseCSV(fRaw));
-      if(players.length && matches.length){ return render(players,matches,true); }
+      let votes=null;
+      if(CONFIG.VOTES_CSV){
+        try{ const vRaw=await fetch(CONFIG.VOTES_CSV).then(r=>r.text()); votes=readVotes(parseCSV(vRaw)); }catch(e){}
+      }
+      if(players.length && matches.length){ return render(players,matches,true,votes); }
     }catch(e){ /* fetch blocked (e.g. local file) — fall back to snapshot */ }
   }
   const snap = fromSnapshot();
-  if(snap.players.length){ return render(snap.players,snap.matches,false); }
+  if(snap.players.length){ return render(snap.players,snap.matches,false,null); }
   setupScreen();
+}
+
+function readVotes(rows){
+  if(!rows || rows.length<2) return null;
+  const h=rows[0]; const players=[], cols=[];
+  for(let c=3;c<h.length;c++){ if(h[c] && h[c].trim()){ players.push(h[c].trim()); cols.push(c); } }
+  const picks={};
+  for(let i=1;i<rows.length;i++){const r=rows[i];const mn=parseInt(r[0],10);
+    if(!mn || isNaN(mn)) continue;
+    const mp={};
+    for(let k=0;k<cols.length;k++){const v=(r[cols[k]]||'').trim().toUpperCase();
+      if(v==='H'||v==='D'||v==='A') mp[players[k]]=v;}
+    picks[mn]=mp;}
+  return players.length?{players,picks}:null;
 }
 
 function readStandings(rows){
@@ -235,7 +322,7 @@ function readFixtures(rows){
 Chart.defaults.color=C.muted;
 Chart.defaults.font.family="-apple-system,Segoe UI,Roboto,sans-serif";
 
-function render(active,MATCHES,live){
+function render(active,MATCHES,live,votes){
   document.getElementById('status').style.display='none';
   document.getElementById('report').style.display='block';
 
@@ -251,7 +338,7 @@ function render(active,MATCHES,live){
   document.getElementById('foot').innerHTML = (live
     ? "BPL 2026 — live report, refreshes from the sheet on each open · group stage runs 72 games."
     : "BPL 2026 — showing a saved snapshot (through Match "+Math.max(...MATCHES.map(m=>m.n))+"). Put this file online (e.g. Netlify Drop) for auto-updating live data.")
-    + "<br>Individual votes and payment details are not shown here.";
+    + "<br>Payment details are not shown.";
 
   document.getElementById('kpis').innerHTML=[
    {v:settled+"<small style='font-size:13px;color:#8ba0b8'> / 72</small>",l:"Games settled",s:"Group stage"},
@@ -268,6 +355,7 @@ function render(active,MATCHES,live){
   payoutChart(MATCHES);
   upsetCards(MATCHES);
   standingsTable(active);
+  renderVoting(votes,MATCHES,active);
 }
 
 function hbar(id,rows,color){
@@ -362,6 +450,134 @@ function errorScreen(e){
   document.getElementById('status').innerHTML=
    `<h3>Couldn't load the data</h3>
     <div class="dsc" style="color:var(--muted)">The published links may be wrong, or the tabs aren't published as CSV yet.<br><br><code>${(e&&e.message)||e}</code></div>`;
+}
+
+function renderVoting(votes, MATCHES, active){
+  const secs=document.querySelectorAll('.vote-sec');
+  if(!votes || !votes.players || !votes.players.length){ secs.forEach(s=>s.style.display='none'); return; }
+  secs.forEach(s=>s.style.display='');
+  const netByName={}; active.forEach(p=>netByName[p.name]=p.net);
+
+  // majority pick per settled match
+  const majBy={};
+  MATCHES.forEach(m=>{const pk=votes.picks[m.n]||{};const c={H:0,D:0,A:0};
+    Object.values(pk).forEach(v=>{if(c[v]!==undefined)c[v]++;});
+    if(c.H+c.D+c.A) majBy[m.n]=(c.H>=c.D ? (c.H>=c.A?'H':'A') : (c.D>=c.A?'D':'A'));});
+
+  function pstats(name){
+    let h=0,d=0,a=0,correct=0,voted=0,contr=0; const hist=[];
+    MATCHES.forEach(m=>{const pk=votes.picks[m.n] && votes.picks[m.n][name]; if(!pk) return;
+      voted++; if(pk==='H')h++; else if(pk==='D')d++; else a++;
+      const won=pk===m.res; if(won)correct++;
+      if(majBy[m.n] && pk!==majBy[m.n]) contr++;
+      hist.push({n:m.n, pick:pk, won});});
+    let maxWin=0,maxLoss=0,cw=0,cl=0;
+    hist.forEach(x=>{ if(x.won){cw++;cl=0;if(cw>maxWin)maxWin=cw;} else {cl++;cw=0;if(cl>maxLoss)maxLoss=cl;} });
+    let cur=0;
+    for(let i=hist.length-1;i>=0;i--){const w=hist[i].won;
+      if(cur===0)cur=w?1:-1; else if(w&&cur>0)cur++; else if(!w&&cur<0)cur--; else break;}
+    return {h,d,a,voted,correct,contr,hist,maxWin,maxLoss,cur,
+      acc:voted?correct/voted*100:0, contrR:voted?contr/voted*100:0};
+  }
+  function similar(name){
+    const out=[];
+    votes.players.forEach(o=>{ if(o===name)return; let same=0,both=0;
+      MATCHES.forEach(m=>{const A=votes.picks[m.n]&&votes.picks[m.n][name];const B=votes.picks[m.n]&&votes.picks[m.n][o];
+        if(A&&B){both++; if(A===B)same++;}});
+      if(both>=5) out.push({o, pct:same/both*100});});
+    return out.sort((x,y)=>y.pct-x.pct);
+  }
+  function funnyJourney(name, s, net){
+    const acc=s.acc, contr=s.contrR, pick=a=>a[Math.floor(Math.random()*a.length)];
+    const bits=[];
+    if(net>=0 && acc>=50) bits.push(pick([
+      `${name} reads matches like the back of a cereal box and keeps the receipts — right often, up nicely, and quietly insufferable about both.`,
+      `Quietly excellent: ${name} calls it, banks it, repeats. The kind of form that makes the group chat go suspiciously silent.`]));
+    else if(net>=0 && acc<35) bits.push(pick([
+      `${name} is wrong almost every single night and somehow keeps getting richer — a one-person argument against ever trusting the crowd.`,
+      `Accuracy of a coin flip in a wind tunnel, yet the wallet keeps fattening. ${name} doesn't beat the room; ${name} ignores it entirely.`]));
+    else if(net>=0) bits.push(pick([
+      `${name} is grinding it out — not flashy, not reckless, just stubbornly in the black.`,
+      `Steady hands, modest swagger: ${name} is up and in absolutely no rush to explain how.`]));
+    else if(net<0 && acc>=50) bits.push(pick([
+      `Cruellest-tournament award goes to ${name}: right more than almost anyone, and still bleeding money — the tax for always agreeing with everybody.`,
+      `${name} keeps picking winners and somehow keeps losing. Correct, crowded, and broke — football is a heartless sport.`]));
+    else bits.push(pick([
+      `It has not been ${name}'s tournament. At this point the fixtures feel personal.`,
+      `${name} has been to the casino, left the lights on, and locked the keys inside. We are, against the odds, rooting for the comeback.`]));
+    if(s.maxWin>=4) bits.push(pick([` A ${s.maxWin}-game hot streak in there too — briefly unbeatable, fully aware of it.`,` Did reel off ${s.maxWin} in a row at one point, and made sure everyone knew.`]));
+    if(s.maxLoss>=4) bits.push(pick([` Also weathered a ${s.maxLoss}-game cold spell that would test a saint.`,` Survived ${s.maxLoss} straight losses once — a dark week best left unspoken.`]));
+    if(contr>=60) bits.push(` Votes against the crowd ${contr.toFixed(0)}% of the time, seemingly on principle.`);
+    else if(contr<=20) bits.push(` Sticks with the majority ${(100-contr).toFixed(0)}% of the time — safety in numbers.`);
+    if(s.cur>=3) bits.push(` Right now: ${s.cur} wins on the bounce and counting.`);
+    else if(s.cur<=-3) bits.push(` Right now: ${Math.abs(s.cur)} losses deep and praying.`);
+    return bits.join('');
+  }
+  function profileHTML(name){
+    const s=pstats(name); if(!s.voted) return `<div class="vsim">No votes recorded for ${name} yet.</div>`;
+    const pc=v=>Math.round(v/s.voted*100);
+    const stat=(v,l)=>`<div class="vstat"><div class="vv">${v}</div><div class="vl">${l}</div></div>`;
+    const style = s.contrR>=50 ? 'Contrarian' : s.contrR<=20 ? 'Crowd-follower' : 'Balanced';
+    const sims=similar(name).slice(0,3);
+    const simTxt = sims.length
+      ? `Votes most like: ${sims.map(x=>`<b>${x.o}</b> (${x.pct.toFixed(0)}%)`).join(', ')}`
+      : 'Not enough overlap to compare yet.';
+    const chips=s.hist.slice().reverse().map(x=>`<span class="vchip ${x.won?'win':'loss'}">M${x.n} <span class="vp">${x.pick}</span></span>`).join('');
+    return `
+      <div class="vjourney">${funnyJourney(name,s,netByName[name]||0)}</div>
+      <div class="vprow">
+        ${stat(s.voted,'Votes cast')}
+        ${stat(s.acc.toFixed(0)+'%','Accuracy')}
+        ${stat(pc(s.h)+'/'+pc(s.d)+'/'+pc(s.a),'Home / Draw / Away %')}
+        ${stat(s.contrR.toFixed(0)+'%','Against the crowd')}
+        ${stat(s.maxWin,'Best win streak')}
+        ${stat(s.maxLoss,'Worst losing streak')}
+        ${stat(style,'Style')}
+      </div>
+      <div class="vhwrap"><div class="vhlab">Every pick (green border = won)</div><div class="vhist">${chips}</div></div>
+      <div class="vsim">${simTxt}</div>`;
+  }
+
+  const sel=document.getElementById('vplayer');
+  const voters=new Set();
+  Object.values(votes.picks).forEach(mp=>Object.keys(mp).forEach(n=>voters.add(n)));
+  const names=[...votes.players].filter(n=>voters.has(n)).sort();
+  sel.innerHTML=names.map(n=>`<option>${n}</option>`).join('');
+  const top=[...active].sort((a,b)=>b.net-a.net)[0];
+  if(top && names.includes(top.name)) sel.value=top.name;
+  const update=()=>{document.getElementById('vprofile').innerHTML=profileHTML(sel.value);};
+  sel.onchange=update; update();
+
+  let cr=0,tot=0; MATCHES.forEach(m=>{if(majBy[m.n]){tot++; if(majBy[m.n]===m.res)cr++;}});
+  document.getElementById('crowdLede').innerHTML=
+    `Across ${tot} settled games, the <b>majority pick was right ${tot?Math.round(cr/tot*100):0}%</b> of the time. `+
+    `Here are the players who most often beat the crowd — and the ones who march to their own drum.`;
+  const contr=votes.players.map(name=>{let cc=0;
+    MATCHES.forEach(m=>{const pk=votes.picks[m.n]&&votes.picks[m.n][name];
+      if(pk && majBy[m.n] && pk!==majBy[m.n] && pk===m.res) cc++;});
+    return {name,cc};}).filter(x=>x.cc>0).sort((a,b)=>b.cc-a.cc).slice(0,8);
+  const mav=votes.players.map(name=>{let ts=0,c=0;
+    votes.players.forEach(o=>{if(o===name)return;let same=0,both=0;
+      MATCHES.forEach(m=>{const A=votes.picks[m.n]&&votes.picks[m.n][name];const B=votes.picks[m.n]&&votes.picks[m.n][o];
+        if(A&&B){both++;if(A===B)same++;}});
+      if(both>=5){ts+=same/both;c++;}});
+    return {name, avg:c?ts/c*100:null};}).filter(x=>x.avg!==null).sort((a,b)=>a.avg-b.avg).slice(0,8);
+  document.getElementById('contrList').innerHTML=contr.length
+    ? contr.map(x=>`<div class="vlrow"><span class="vn">${x.name}</span><span class="vc">${x.cc}</span></div>`).join('')
+    : '<div class="vsim">—</div>';
+  document.getElementById('mavList').innerHTML=mav.length
+    ? mav.map(x=>`<div class="vlrow"><span class="vn">${x.name}</span><span class="vc">${x.avg.toFixed(0)}% alike</span></div>`).join('')
+    : '<div class="vsim">—</div>';
+
+  const streaks=names.map(name=>{const s=pstats(name);return{name,w:s.maxWin,l:s.maxLoss};});
+  const topW=[...streaks].filter(x=>x.w>0).sort((a,b)=>b.w-a.w).slice(0,6);
+  const topL=[...streaks].filter(x=>x.l>0).sort((a,b)=>b.l-a.l).slice(0,6);
+  document.getElementById('winStreaks').innerHTML=topW.length
+    ? topW.map(x=>`<div class="vlrow"><span class="vn">${x.name}</span><span class="vc">${x.w} in a row</span></div>`).join('')
+    : '<div class="vsim">—</div>';
+  document.getElementById('lossStreaks').innerHTML=topL.length
+    ? topL.map(x=>`<div class="vlrow"><span class="vn">${x.name}</span><span class="vc" style="color:var(--red)">${x.l} in a row</span></div>`).join('')
+    : '<div class="vsim">—</div>';
 }
 load();
 </script>
