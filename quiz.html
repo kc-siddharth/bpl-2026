@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPL 2026 · Capitals Quiz</title>
+<style>
+  :root{--bg:#0b1018;--panel:#141c27;--panel2:#1b2532;--line:#243042;--txt:#eaf0f7;
+    --muted:#8194ac;--gold:#f4c64a;--green:#3ddc97;--red:#ff6b6b;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);line-height:1.5;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:560px;margin:0 auto;padding:30px 18px 60px}
+  header{text-align:center;margin-bottom:18px}
+  .kicker{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:11px;font-weight:700}
+  h1{font-size:27px;margin:6px 0 2px;font-weight:800;letter-spacing:-.5px}
+  .sub{color:var(--muted);font-size:13.5px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+  input[type=text]{width:100%;background:var(--panel2);color:var(--txt);border:1px solid var(--line);
+    border-radius:10px;padding:12px 14px;font-size:16px;font-family:inherit;outline:none}
+  input[type=text]:focus{border-color:var(--gold)}
+  .btn{display:inline-block;width:100%;background:var(--gold);color:#0b1018;border:none;border-radius:10px;
+    padding:13px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:12px}
+  .btn:disabled{opacity:.5;cursor:default}
+  .btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:600}
+  .muted{color:var(--muted);font-size:13px}
+  .hide{display:none}
+
+  /* game */
+  .gtop{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:14px}
+  .gtop b{color:var(--txt)}
+  .timerbar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:18px}
+  .timerfill{height:100%;background:var(--gold);width:100%;transition:width .1s linear}
+  .timerfill.warn{background:var(--red)}
+  .flagwrap{text-align:center;margin:6px 0 14px}
+  .flag{height:78px;border-radius:6px;border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+  .country{text-align:center;font-size:24px;font-weight:800;letter-spacing:-.4px;margin:0 0 6px}
+  .hint{text-align:center;color:var(--muted);font-size:13.5px;margin-bottom:16px}
+  .hint b{color:var(--gold)}
+  .fb{border-radius:12px;padding:14px 16px;margin-top:16px;font-size:15px;font-weight:600;text-align:center}
+  .fb.ok{background:rgba(61,220,151,.12);border:1px solid rgba(61,220,151,.5);color:var(--green)}
+  .fb.no{background:rgba(255,107,107,.10);border:1px solid rgba(255,107,107,.45);color:var(--red)}
+  .fb small{display:block;color:var(--muted);font-weight:500;margin-top:3px;font-size:13px}
+
+  /* end + leaderboard */
+  .scorebig{text-align:center;font-size:40px;font-weight:800;letter-spacing:-1px;margin:6px 0 0}
+  .scoresub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:18px}
+  .lbtitle{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin:22px 0 8px}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  tr.me td{background:rgba(244,198,74,.10)}
+  .rk{color:var(--muted);width:34px;text-align:center;font-weight:700}
+  .err{color:var(--red);font-size:13px;margin-top:10px}
+</style>
+</head>
+<body>
+
+<!-- Paste your Apps Script Web App URL (…/exec) here after deploying -->
+<script>
+const CONFIG = {
+  API_URL: "https://script.google.com/macros/s/AKfycbzmnWu38JGTNKOA7w7PB9_-Kx_-28Q6c6_ED4PiOvVuHpnQPMTgelw9YWroy0X2NQbQ/exec",            // <-- Apps Script /exec URL
+  SECONDS: 10             // seconds per question
+};
+</script>
+
+<div class="wrap">
+  <header>
+    <div class="kicker">Betting Premier League · World Cup 2026</div>
+    <h1>Capitals Quiz</h1>
+    <div class="sub">48 nations · <span id="secLbl"></span>s a question · one try each</div>
+  </header>
+
+  <!-- START -->
+  <div id="start" class="card">
+    <p class="muted" style="margin-top:0">Name the capital of all 48 World Cup teams. You'll see the
+      flag and the city's population as a hint, and the clock's ticking. Spelling can be a little off
+      — we're forgiving.</p>
+    <input id="name" type="text" placeholder="Your name" maxlength="28" autocomplete="off">
+    <button class="btn" id="startBtn">Start quiz</button>
+    <button class="btn ghost" id="seeLb">View leaderboard</button>
+    <div class="err hide" id="startErr"></div>
+  </div>
+
+  <!-- GAME -->
+  <div id="game" class="card hide">
+    <div class="gtop"><span>Question <b id="qnum">1</b> / 48</span><span>Score <b id="score">0</b></span></div>
+    <div class="timerbar"><div class="timerfill" id="timerfill"></div></div>
+    <div class="flagwrap"><img class="flag" id="flag" alt="flag"></div>
+    <div class="country" id="country"></div>
+    <div class="hint" id="hint"></div>
+    <input id="answer" type="text" placeholder="Capital city…" autocomplete="off" autocapitalize="words">
+    <button class="btn" id="submitBtn">Submit</button>
+    <div id="fb"></div>
+  </div>
+
+  <!-- END -->
+  <div id="end" class="card hide">
+    <div class="scorebig" id="finalScore"></div>
+    <div class="scoresub" id="finalSub"></div>
+    <div id="lbStatus" class="muted" style="text-align:center"></div>
+    <div class="lbtitle">Leaderboard</div>
+    <table id="lbTable"><thead><tr><th class="rk">#</th><th>Player</th><th class="num">Score</th><th class="num">Time</th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<script>
+const Q=[
+{c:"Mexico",cap:"Mexico City",cc:"mx",pop:"~9.2 million",alt:["ciudad de mexico","cdmx","mexico df"]},
+{c:"South Africa",cap:"Pretoria",cc:"za",pop:"~0.74 million",alt:["cape town","bloemfontein"]},
+{c:"South Korea",cap:"Seoul",cc:"kr",pop:"~9.6 million",alt:[]},
+{c:"Czechia",cap:"Prague",cc:"cz",pop:"~1.3 million",alt:["praha"]},
+{c:"Canada",cap:"Ottawa",cc:"ca",pop:"~1.0 million",alt:[]},
+{c:"Bosnia and Herzegovina",cap:"Sarajevo",cc:"ba",pop:"~0.28 million",alt:[]},
+{c:"Qatar",cap:"Doha",cc:"qa",pop:"~0.95 million",alt:[]},
+{c:"Switzerland",cap:"Bern",cc:"ch",pop:"~0.13 million",alt:["berne"]},
+{c:"Brazil",cap:"Brasília",cc:"br",pop:"~3.1 million",alt:["brasilia"]},
+{c:"Morocco",cap:"Rabat",cc:"ma",pop:"~0.58 million",alt:[]},
+{c:"Haiti",cap:"Port-au-Prince",cc:"ht",pop:"~1.2 million",alt:["port au prince"]},
+{c:"Scotland",cap:"Edinburgh",cc:"gb-sct",pop:"~0.5 million",alt:[]},
+{c:"USA",cap:"Washington, D.C.",cc:"us",pop:"~0.71 million",alt:["washington","washington dc"]},
+{c:"Paraguay",cap:"Asunción",cc:"py",pop:"~0.52 million",alt:["asuncion"]},
+{c:"Australia",cap:"Canberra",cc:"au",pop:"~0.46 million",alt:[]},
+{c:"Türkiye",cap:"Ankara",cc:"tr",pop:"~5.7 million",alt:[]},
+{c:"Germany",cap:"Berlin",cc:"de",pop:"~3.7 million",alt:[]},
+{c:"Curaçao",cap:"Willemstad",cc:"cw",pop:"~0.15 million",alt:[]},
+{c:"Ivory Coast",cap:"Yamoussoukro",cc:"ci",pop:"~0.36 million",alt:["abidjan"]},
+{c:"Ecuador",cap:"Quito",cc:"ec",pop:"~1.9 million",alt:[]},
+{c:"Netherlands",cap:"Amsterdam",cc:"nl",pop:"~0.92 million",alt:[]},
+{c:"Japan",cap:"Tokyo",cc:"jp",pop:"~14 million",alt:["tokio"]},
+{c:"Sweden",cap:"Stockholm",cc:"se",pop:"~1.0 million",alt:[]},
+{c:"Tunisia",cap:"Tunis",cc:"tn",pop:"~0.64 million",alt:[]},
+{c:"Belgium",cap:"Brussels",cc:"be",pop:"~1.2 million",alt:["bruxelles","brussel"]},
+{c:"Egypt",cap:"Cairo",cc:"eg",pop:"~10 million",alt:[]},
+{c:"Iran",cap:"Tehran",cc:"ir",pop:"~9.0 million",alt:["teheran"]},
+{c:"New Zealand",cap:"Wellington",cc:"nz",pop:"~0.21 million",alt:[]},
+{c:"Spain",cap:"Madrid",cc:"es",pop:"~3.3 million",alt:[]},
+{c:"Cape Verde",cap:"Praia",cc:"cv",pop:"~0.16 million",alt:[]},
+{c:"Saudi Arabia",cap:"Riyadh",cc:"sa",pop:"~7.0 million",alt:["ar riyadh"]},
+{c:"Uruguay",cap:"Montevideo",cc:"uy",pop:"~1.3 million",alt:[]},
+{c:"France",cap:"Paris",cc:"fr",pop:"~2.1 million",alt:[]},
+{c:"Senegal",cap:"Dakar",cc:"sn",pop:"~1.2 million",alt:[]},
+{c:"Iraq",cap:"Baghdad",cc:"iq",pop:"~7.5 million",alt:["bagdad"]},
+{c:"Norway",cap:"Oslo",cc:"no",pop:"~0.7 million",alt:[]},
+{c:"Argentina",cap:"Buenos Aires",cc:"ar",pop:"~3.0 million",alt:[]},
+{c:"Algeria",cap:"Algiers",cc:"dz",pop:"~2.7 million",alt:["alger"]},
+{c:"Austria",cap:"Vienna",cc:"at",pop:"~2.0 million",alt:["wien"]},
+{c:"Jordan",cap:"Amman",cc:"jo",pop:"~4.0 million",alt:[]},
+{c:"Portugal",cap:"Lisbon",cc:"pt",pop:"~0.55 million",alt:["lisboa"]},
+{c:"DR Congo",cap:"Kinshasa",cc:"cd",pop:"~16 million",alt:[]},
+{c:"Uzbekistan",cap:"Tashkent",cc:"uz",pop:"~2.6 million",alt:["toshkent"]},
+{c:"Colombia",cap:"Bogotá",cc:"co",pop:"~7.9 million",alt:["bogota"]},
+{c:"England",cap:"London",cc:"gb-eng",pop:"~8.9 million",alt:[]},
+{c:"Croatia",cap:"Zagreb",cc:"hr",pop:"~0.77 million",alt:[]},
+{c:"Ghana",cap:"Accra",cc:"gh",pop:"~2.6 million",alt:[]},
+{c:"Panama",cap:"Panama City",cc:"pa",pop:"~0.88 million",alt:["panama","ciudad de panama"]}
+];
+
+const $=id=>document.getElementById(id);
+document.getElementById('secLbl').textContent=CONFIG.SECONDS;
+const norm=s=>String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
+function lev(a,b){const m=a.length,n=b.length,d=[...Array(m+1)].map((_,i)=>[i,...Array(n).fill(0)]);
+  for(let j=1;j<=n;j++)d[0][j]=j;
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));
+  return d[m][n];}
+function correct(input,q){const n=norm(input); if(!n)return false;
+  const accept=[q.cap,...q.alt].map(norm);
+  return accept.some(a=>{ if(!a)return false; if(n===a)return true;
+    const tol=a.length>=8?2:a.length>=5?1:0; return lev(n,a)<=tol; });}
+
+let name='', order=[], idx=0, score=0, startTime=0, timer=null, answered=false;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+$('startBtn').onclick=async()=>{
+  name=$('name').value.trim();
+  if(name.length<2){ $('startErr').textContent='Please enter your name.'; $('startErr').classList.remove('hide'); return; }
+  $('startBtn').disabled=true; $('startErr').classList.add('hide');
+  // one attempt: check leaderboard for this name
+  let lb=[];
+  try{ lb=await getLeaderboard(); }catch(e){}
+  if(localStorage.getItem('bplq_'+name.toLowerCase()) || lb.some(r=>String(r.name).trim().toLowerCase()===name.toLowerCase())){
+    const mine=lb.find(r=>String(r.name).trim().toLowerCase()===name.toLowerCase());
+    showEnd(mine?mine.score:0, 0, lb, true);
+    return;
+  }
+  beginGame();
+};
+$('seeLb').onclick=async()=>{ try{ showEnd(null,null,await getLeaderboard(),false,true); }catch(e){ $('startErr').textContent='Could not load the leaderboard.'; $('startErr').classList.remove('hide'); } };
+
+function beginGame(){
+  order=shuffle([...Array(Q.length).keys()]); idx=0; score=0; startTime=Date.now();
+  $('start').classList.add('hide'); $('end').classList.add('hide'); $('game').classList.remove('hide');
+  showQuestion();
+}
+function showQuestion(){
+  answered=false; const q=Q[order[idx]];
+  $('qnum').textContent=idx+1; $('score').textContent=score;
+  $('flag').src='https://flagcdn.com/h80/'+q.cc+'.png'; $('flag').onerror=()=>{$('flag').style.display='none';};
+  $('flag').style.display='';
+  $('country').textContent=q.c;
+  $('hint').innerHTML='Capital city — population <b>'+q.pop+'</b>';
+  $('fb').innerHTML=''; const ans=$('answer'); ans.value=''; ans.disabled=false; ans.focus();
+  $('submitBtn').disabled=false; $('submitBtn').textContent='Submit';
+  // timer
+  let t=CONFIG.SECONDS, fill=$('timerfill'); fill.classList.remove('warn'); fill.style.width='100%';
+  const started=Date.now();
+  clearInterval(timer);
+  timer=setInterval(()=>{ const el=(Date.now()-started)/1000; const left=Math.max(0,CONFIG.SECONDS-el);
+    fill.style.width=(left/CONFIG.SECONDS*100)+'%'; if(left<=3)fill.classList.add('warn');
+    if(left<=0){ clearInterval(timer); judge(true); } },100);
+}
+function judge(timeout){
+  if(answered)return; answered=true; clearInterval(timer);
+  const q=Q[order[idx]]; const val=$('answer').value;
+  const ok=!timeout && correct(val,q);
+  if(ok)score++;
+  $('score').textContent=score;
+  $('answer').disabled=true; $('submitBtn').disabled=true;
+  $('fb').innerHTML = ok
+    ? '<div class="fb ok">✓ Correct!</div>'
+    : '<div class="fb no">✗ '+(timeout?"Time's up":"Not quite")+'<small>The capital is <b style="color:var(--txt)">'+q.cap+'</b></small></div>';
+  setTimeout(()=>{ idx++; if(idx<Q.length) showQuestion(); else finish(); }, 1700);
+}
+$('submitBtn').onclick=()=>judge(false);
+$('answer').addEventListener('keydown',e=>{ if(e.key==='Enter'&&!answered)judge(false); });
+
+async function finish(){
+  $('game').classList.add('hide');
+  const timeMs=Date.now()-startTime;
+  localStorage.setItem('bplq_'+name.toLowerCase(),'1');
+  let lb=[];
+  try{ lb=await submitScore(name,score,Q.length,timeMs); }catch(e){}
+  // optimistic: ensure my row is in the board
+  if(!lb.some(r=>String(r.name).trim().toLowerCase()===name.toLowerCase()))
+    lb.push({name,score,total:Q.length,timeMs});
+  lb.sort((a,b)=>b.score-a.score || a.timeMs-b.timeMs);
+  showEnd(score,timeMs,lb,false);
+}
+
+function showEnd(sc,timeMs,lb,already,browseOnly){
+  $('start').classList.add('hide'); $('game').classList.add('hide'); $('end').classList.remove('hide');
+  if(browseOnly){ $('finalScore').textContent='Leaderboard'; $('finalSub').textContent=''; $('lbStatus').textContent=''; }
+  else if(already){ $('finalScore').textContent=(sc!=null?sc+' / 48':'Already played');
+    $('finalSub').textContent="You've already played — one try each!"; $('lbStatus').textContent=''; }
+  else { $('finalScore').textContent=sc+' / 48';
+    $('finalSub').textContent='Finished in '+Math.round(timeMs/1000)+'s. Nice work, '+name+'!';
+    $('lbStatus').textContent=CONFIG.API_URL?'':'(Set up the backend to save scores — see setup notes.)'; }
+  renderLb(lb||[]);
+}
+function fmtTime(ms){ if(!ms)return '—'; const s=Math.round(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function renderLb(lb){
+  const body=$('lbTable').querySelector('tbody');
+  if(!lb.length){ body.innerHTML='<tr><td colspan="4" class="muted" style="text-align:center;padding:18px">No scores yet — be the first!</td></tr>'; return; }
+  body.innerHTML=lb.slice(0,50).map((r,i)=>`<tr class="${name&&String(r.name).trim().toLowerCase()===name.toLowerCase()?'me':''}">
+    <td class="rk">${i+1}</td><td>${esc(r.name)}</td><td class="num">${r.score}</td><td class="num" style="color:var(--muted);font-weight:500">${fmtTime(r.timeMs)}</td></tr>`).join('');
+}
+const esc=s=>String(s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+
+async function getLeaderboard(){
+  if(!CONFIG.API_URL) return [];
+  const r=await fetch(CONFIG.API_URL); const j=await r.json(); return j.leaderboard||[];
+}
+async function submitScore(name,score,total,timeMs){
+  if(!CONFIG.API_URL) return [];
+  const r=await fetch(CONFIG.API_URL,{method:'POST',body:JSON.stringify({name,score,total,timeMs})});
+  const j=await r.json(); return j.leaderboard||[];
+}
+</script>
+</body>
+</html>
