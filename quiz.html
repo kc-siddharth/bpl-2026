@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BPL 2026 · Capitals Quiz</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="BPL Capitals Quiz">
+<meta property="og:description" content="Name the capital of all 48 World Cup nations — 10 seconds each, one try. Can you top the leaderboard?">
+<meta property="og:image" content="https://kc-siddharth.github.io/bpl-2026/branding/kc_share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="340">
+<meta property="og:url" content="https://kc-siddharth.github.io/bpl-2026/quiz.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BPL Capitals Quiz">
+<meta name="twitter:description" content="Name the capital of all 48 World Cup nations — 10 seconds each, one try.">
+<meta name="twitter:image" content="https://kc-siddharth.github.io/bpl-2026/branding/kc_share.png">
+<link rel="icon" type="image/png" href="https://kc-siddharth.github.io/bpl-2026/branding/kc_icon.png">
 <style>
   :root{--bg:#0b1018;--panel:#141c27;--panel2:#1b2532;--line:#243042;--txt:#eaf0f7;
     --muted:#8194ac;--gold:#f4c64a;--green:#3ddc97;--red:#ff6b6b;}
@@ -13,6 +25,8 @@
     -webkit-font-smoothing:antialiased}
   .wrap{max-width:560px;margin:0 auto;padding:30px 18px 60px}
   header{text-align:center;margin-bottom:18px}
+  .titlerow{display:flex;align-items:center;justify-content:center;gap:12px}
+  .kcmark{width:46px;height:46px;flex:none;display:block}
   .kicker{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:11px;font-weight:700}
   h1{font-size:27px;margin:6px 0 2px;font-weight:800;letter-spacing:-.5px}
   .sub{color:var(--muted);font-size:13.5px}
@@ -69,7 +83,7 @@ const CONFIG = {
 <div class="wrap">
   <header>
     <div class="kicker">Betting Premier League · World Cup 2026</div>
-    <h1>Capitals Quiz</h1>
+    <div class="titlerow"><img class="kcmark" src="branding/kc_monogram.png" alt="KC"><h1>Capitals Quiz</h1></div>
     <div class="sub">48 nations · <span id="secLbl"></span>s a question · one try each</div>
   </header>
 
@@ -102,6 +116,8 @@ const CONFIG = {
   <div id="end" class="card hide">
     <div class="scorebig" id="finalScore"></div>
     <div class="scoresub" id="finalSub"></div>
+    <button class="btn hide" id="shareBtn" style="background:var(--green)">Share my score</button>
+    <div id="shareMsg" class="muted" style="text-align:center;font-size:12px;margin-top:6px"></div>
     <div id="lbStatus" class="muted" style="text-align:center"></div>
     <div class="lbtitle">Leaderboard</div>
     <table id="lbTable"><thead><tr><th class="rk">#</th><th>Player</th><th class="num">Score</th><th class="num">Time</th></tr></thead><tbody></tbody></table>
@@ -257,7 +273,18 @@ function showEnd(sc,timeMs,lb,already,browseOnly){
   else { $('finalScore').textContent=sc+' / 48';
     $('finalSub').textContent='Finished in '+Math.round(timeMs/1000)+'s. Nice work, '+name+'!';
     $('lbStatus').textContent=CONFIG.API_URL?'':'(Set up the backend to save scores — see setup notes.)'; }
+  const shareBtn=$('shareBtn'); $('shareMsg').textContent='';
+  if(browseOnly){ shareBtn.classList.add('hide'); }
+  else { shareBtn.classList.remove('hide'); shareBtn.onclick=()=>shareScore(sc!=null?sc:0); }
   renderLb(lb||[]);
+}
+function shareScore(sc){
+  const url=location.origin+location.pathname;
+  const text=`I scored ${sc}/48 on the BPL Capitals Quiz ⚽ Can you name the World Cup capitals?`;
+  if(navigator.share){ navigator.share({title:'BPL Capitals Quiz',text,url}).catch(()=>{}); return; }
+  const full=text+' '+url;
+  try{ navigator.clipboard.writeText(full); $('shareMsg').textContent='Link copied — opening WhatsApp…'; }catch(e){}
+  window.open('https://wa.me/?text='+encodeURIComponent(full),'_blank');
 }
 function fmtTime(ms){ if(!ms)return '—'; const s=Math.round(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
 function renderLb(lb){
