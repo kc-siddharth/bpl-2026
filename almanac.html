@@ -67,12 +67,12 @@ const FL=[{"n": "Algeria", "c": "dz"}, {"n": "Argentina", "c": "ar"}, {"n": "Aus
 const grid=document.getElementById('grid');
 FL.forEach(d=>{
   const b=document.createElement('button'); b.className='tile';
-  b.innerHTML='<img loading="lazy" src="https://flagcdn.com/h54/'+d.c+'.png" alt="" onerror="this.style.visibility=\'hidden\'"><span>'+d.n+'</span>';
+  b.innerHTML='<img loading="lazy" src="https://flagcdn.com/h60/'+d.c+'.png" alt="" onerror="this.style.visibility=\'hidden\'"><span>'+d.n+'</span>';
   b.onclick=()=>openPop(d); grid.appendChild(b);
 });
 const pop=document.getElementById('pop');
 function openPop(d){
-  document.getElementById('pflag').src='https://flagcdn.com/h180/'+d.c+'.png';
+  document.getElementById('pflag').src='https://flagcdn.com/h240/'+d.c+'.png';
   document.getElementById('pname').textContent=d.n;
   pop.classList.add('on');
 }
