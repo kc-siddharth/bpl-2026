@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPL 2026 · Top Exports</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="BPL Top Exports">
+<meta property="og:description" content="What does each World Cup nation sell most? Match all 48 to their #1 export — and learn the story behind the trade.">
+<meta property="og:image" content="https://kc-siddharth.github.io/bpl-2026/branding/kc_share_exports.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" type="image/png" href="https://kc-siddharth.github.io/bpl-2026/branding/kc_favicon.png">
+<link rel="apple-touch-icon" href="https://kc-siddharth.github.io/bpl-2026/branding/apple-touch-icon.png">
+<style>
+  :root{--bg:#0b1018;--panel:#141c27;--panel2:#1b2532;--line:#243042;--txt:#eaf0f7;--muted:#8194ac;--gold:#f4c64a;--green:#3ddc97;--red:#ff6b6b;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);line-height:1.5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:560px;margin:0 auto;padding:30px 18px 60px}
+  .backhub{display:inline-flex;align-items:center;gap:5px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:5px 13px;margin-bottom:18px;transition:border-color .15s,color .15s}
+  .backhub:hover{border-color:var(--gold);color:var(--gold)}
+  header{text-align:center;margin-bottom:18px}
+  .titlerow{display:flex;align-items:center;justify-content:center;gap:12px}
+  .kcmark{width:46px;height:46px;flex:none;display:block}
+  .kicker{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:11px;font-weight:700}
+  h1{font-size:27px;margin:6px 0 2px;font-weight:800;letter-spacing:-.5px}
+  .sub{color:var(--muted);font-size:13.5px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+  input[type=text]{width:100%;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:16px;font-family:inherit;outline:none}
+  input[type=text]:focus{border-color:var(--gold)}
+  .btn{display:inline-block;width:100%;background:var(--gold);color:#0b1018;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:12px}
+  .btn:disabled{opacity:.5;cursor:default}
+  .muted{color:var(--muted);font-size:13px}
+  .hide{display:none}
+  .gtop{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:14px}
+  .gtop b{color:var(--txt)}
+  .timerbar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:20px}
+  .timerfill{height:100%;background:var(--gold);width:100%}
+  .timerfill.warn{background:var(--red)}
+  .qflagwrap{text-align:center;margin:2px 0 12px}
+  .qflag{height:84px;width:auto;border-radius:6px;border:1px solid var(--line);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+  .qnation{text-align:center;font-size:25px;font-weight:800;letter-spacing:-.4px;margin:0 0 4px}
+  .qlabel{text-align:center;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:18px}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:14px 16px;font-size:15.5px;font-weight:600;color:var(--txt);cursor:pointer;font-family:inherit;transition:border-color .12s,background .12s}
+  .opt:hover:not(:disabled){border-color:var(--gold)}
+  .opt:disabled{cursor:default}
+  .opt.correct{background:rgba(61,220,151,.15);border-color:var(--green);color:#eafff6}
+  .opt.wrong{background:rgba(255,107,107,.12);border-color:var(--red)}
+  .reveal{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+  .rhead{font-weight:800;font-size:15px;margin-bottom:10px}
+  .rhead.ok{color:var(--green)} .rhead.no{color:var(--red)}
+  .rexp{font-size:13px;color:var(--gold);font-weight:700;margin-bottom:8px}
+  .rtriv{color:#c5d0de;font-size:14px;line-height:1.6;margin:0}
+  .rnote{color:var(--muted);font-size:12.5px;line-height:1.5;margin:10px 0 0;font-style:italic}
+  .scorebig{text-align:center;font-size:40px;font-weight:800;letter-spacing:-1px;margin:6px 0 0}
+  .scoresub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:18px}
+  .fb-share{background:var(--green)}
+  .shareMsg{text-align:center;color:var(--muted);font-size:12px;margin-top:6px}
+  .lbtitle{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin:22px 0 8px}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  tr.me td{background:rgba(244,198,74,.10)}
+  .rk{color:var(--muted);width:34px;text-align:center;font-weight:700}
+  .err{color:var(--red);font-size:13px;margin-top:10px}
+</style>
+</head>
+<body>
+<script>
+const CONFIG = { API_URL: "", GAME: "exports", SECONDS: 12 };
+</script>
+
+<div class="wrap">
+  <a class="backhub" href="index.html">&lsaquo; All games</a>
+  <header>
+    <div class="kicker">Betting Premier League &middot; World Cup 2026</div>
+    <div class="titlerow"><img class="kcmark" src="branding/kc_monogram.png" alt="KC"><h1>Top Exports</h1></div>
+    <div class="sub">48 nations &middot; what do they sell most? &middot; one try each</div>
+  </header>
+
+  <div id="start" class="card">
+    <p class="muted" style="margin-top:0">You'll see a nation &mdash; pick its <b>#1 export</b> before the clock runs out. After each one, the story behind the trade.</p>
+    <input id="name" type="text" placeholder="Your name" maxlength="28" autocomplete="off">
+    <button class="btn" id="startBtn">Start quiz</button>
+    <div class="err hide" id="startErr"></div>
+    <div class="lbtitle">Leaderboard</div>
+    <div id="homeLbStatus" class="muted" style="font-size:13px;text-align:center;margin-bottom:4px">Loading&hellip;</div>
+    <table id="lbTableHome"><thead><tr><th class="rk">#</th><th>Player</th><th class="num">Score</th><th class="num">Time</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div id="game" class="card hide">
+    <div class="gtop"><span>Question <b id="qnum">1</b> / <span id="qtot">48</span></span><span>Score <b id="score">0</b></span></div>
+    <div class="timerbar"><div class="timerfill" id="timerfill"></div></div>
+    <div class="qflagwrap"><img class="qflag" id="flag" alt=""></div>
+    <div class="qnation" id="nation"></div>
+    <div class="qlabel">Top export?</div>
+    <div class="opts" id="opts"></div>
+    <div id="reveal"></div>
+  </div>
+
+  <div id="end" class="card hide">
+    <div class="scorebig" id="finalScore"></div>
+    <div class="scoresub" id="finalSub"></div>
+    <button class="btn fb-share hide" id="shareBtn">Share my score</button>
+    <div class="shareMsg" id="shareMsg"></div>
+    <div id="lbStatus" class="muted" style="text-align:center"></div>
+    <div class="lbtitle">Leaderboard</div>
+    <table id="lbTable"><thead><tr><th class="rk">#</th><th>Player</th><th class="num">Score</th><th class="num">Time</th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<script>
+const EX=[{"n": "Algeria", "c": "dz", "x": "Natural gas", "t": "One of the world's top natural-gas exporters and a key supplier to Europe; with crude oil, hydrocarbons are over 90% of Algeria's export earnings."}, {"n": "Argentina", "c": "ar", "x": "Soybean meal", "t": "Argentina is the world's #1 exporter of soybean meal (livestock feed); the soy complex is roughly 30% of export earnings."}, {"n": "Australia", "c": "au", "x": "Iron ore", "t": "Australia supplies more than half the world's seaborne iron ore, mostly to China's steel mills — its biggest earner by far."}, {"n": "Austria", "c": "at", "x": "Vaccines", "t": "A gotcha: pharmaceutical vaccines and blood products recently overtook cars to become Austria's #1 export."}, {"n": "Belgium", "c": "be", "x": "Cars", "t": "Cars are Belgium's biggest single export, shipped via its auto hubs and the huge Port of Antwerp-Bruges."}, {"n": "Bosnia & Herzegovina", "c": "ba", "x": "Electricity", "t": "A net power exporter from its hydro and coal plants, Bosnia sells surplus electricity to neighbours; furniture and metals follow."}, {"n": "Brazil", "c": "br", "x": "Crude petroleum", "t": "Crude oil recently overtook soybeans as Brazil's #1 export, driven by booming offshore 'pre-salt' production."}, {"n": "Canada", "c": "ca", "x": "Crude petroleum", "t": "Crude oil dwarfs every other Canadian export, with the vast majority piped south to the United States."}, {"n": "Cape Verde", "c": "cv", "x": "Canned fish", "t": "This Atlantic island nation's exports are mostly canned tuna and mackerel — about two-thirds of goods exports, largely to Spain."}, {"n": "Colombia", "c": "co", "x": "Crude petroleum", "t": "Crude oil is Colombia's top export, more than five times its coal; oil and coal together are over half of all shipments."}, {"n": "Croatia", "c": "hr", "x": "Packaged medicines", "t": "Croatia's biggest single export is packaged medicines, narrowly ahead of refined petroleum."}, {"n": "Curacao", "c": "cw", "x": "Refined petroleum", "t": "Curacao's economy was long built on the giant Isla oil refinery — once ~90% of exports — though the plant has sat idle since 2019."}, {"n": "Czechia", "c": "cz", "x": "Cars", "t": "Czechia is Central Europe's car powerhouse — vehicles, led by Skoda, are #1, with over a million built a year."}, {"n": "DR Congo", "c": "cd", "x": "Copper", "t": "Refined copper is over half of DR Congo's exports; it's also the world's #1 source of cobalt, the battery metal."}, {"n": "Ecuador", "c": "ec", "x": "Crude petroleum", "t": "Oil is Ecuador's top earner — though it's also the world's largest banana exporter, shipping 350+ million boxes a year."}, {"n": "Egypt", "c": "eg", "x": "Crude petroleum", "t": "Petroleum and gas dominate Egypt's exports, with gold a major runner-up."}, {"n": "England", "c": "gb-eng", "x": "Cars", "t": "UK-level data, since England isn't a separate trade entity: cars are the UK's #1 export — Jaguar, Mini and Rolls-Royce among them."}, {"n": "France", "c": "fr", "x": "Aircraft", "t": "France's top export is aircraft and spacecraft — home of Airbus — just ahead of pharmaceuticals and cars."}, {"n": "Germany", "c": "de", "x": "Cars", "t": "Germany is the world's largest car exporter, shipping around $177 billion worth in a year."}, {"n": "Ghana", "c": "gh", "x": "Gold", "t": "Gold is about 45% of Ghana's exports — fittingly, the country was once known as the 'Gold Coast'."}, {"n": "Haiti", "c": "ht", "x": "T-shirts", "t": "Knit t-shirts are Haiti's dominant export — around 40% of the total — nearly all shipped to the United States."}, {"n": "Iran", "c": "ir", "x": "Polyethylene (plastic)", "t": "Sanctioned on oil, Iran's top reported export is polyethylene plastic; crude is its real-world #1 but heavily under-reported."}, {"n": "Iraq", "c": "iq", "x": "Crude petroleum", "t": "One of the world's most oil-dependent economies — crude is roughly 95%+ of all Iraqi exports."}, {"n": "Ivory Coast", "c": "ci", "x": "Cocoa beans", "t": "The world's #1 cocoa producer, Ivory Coast grows about 40% of global supply — the beans behind much of the world's chocolate."}, {"n": "Japan", "c": "jp", "x": "Cars", "t": "Japan is among the world's biggest car exporters, shipping over 5 million vehicles a year; the US is its top market."}, {"n": "Jordan", "c": "jo", "x": "Potash", "t": "Jordan mines potash and phosphates from the mineral-rich Dead Sea; potash fertilizer is its signature top export."}, {"n": "Mexico", "c": "mx", "x": "Cars", "t": "Cars are Mexico's #1 export (~$68 billion), nearly all bound for the US, Canada and Germany."}, {"n": "Morocco", "c": "ma", "x": "Cars", "t": "A gotcha: Morocco's booming auto industry now out-earns its famous phosphates."}, {"n": "Netherlands", "c": "nl", "x": "Refined petroleum", "t": "A giant refining/re-export hub — Rotterdam turns imported crude into ~$72 billion of refined-petroleum exports."}, {"n": "New Zealand", "c": "nz", "x": "Dairy (milk powder)", "t": "Dairy is New Zealand's biggest earner; it's the world's leading exporter of milk powder, with China the top buyer."}, {"n": "Norway", "c": "no", "x": "Natural gas", "t": "Energy is over two-thirds of Norway's exports; natural gas and crude oil dominate, making it a key gas supplier to Europe."}, {"n": "Panama", "c": "pa", "x": "Copper", "t": "Copper from the huge Cobre Panama mine became Panama's top export — though a 2023 court-ordered shutdown has since slashed it."}, {"n": "Paraguay", "c": "py", "x": "Soybeans", "t": "Landlocked Paraguay is a soy heavyweight (~30% of exports); power from its massive Itaipu dam is the #2 export."}, {"n": "Portugal", "c": "pt", "x": "Cars", "t": "Vehicles and parts lead Portugal's exports (~12%), ahead of its famous wine, cork and textiles."}, {"n": "Qatar", "c": "qa", "x": "Natural gas", "t": "Tiny Qatar is one of the planet's largest LNG exporters, and is nearly doubling its gas capacity by 2030."}, {"n": "Saudi Arabia", "c": "sa", "x": "Crude petroleum", "t": "Crude oil is about 65% of Saudi exports, with China, Japan and India the biggest buyers."}, {"n": "Scotland", "c": "gb-sct", "x": "Whisky (Scotch)", "t": "UK reports the trade, but Scotch is Scotland's signature export — over £6bn a year, the equivalent of 43 bottles a second to 180+ markets."}, {"n": "Senegal", "c": "sn", "x": "Gold", "t": "Gold has been Senegal's leading export, though newly opened offshore oil is fast pushing petroleum toward the top."}, {"n": "South Africa", "c": "za", "x": "Platinum", "t": "South Africa holds the world's largest platinum reserves and mines most of the world's platinum; gold is its other top export."}, {"n": "South Korea", "c": "kr", "x": "Computer chips", "t": "Semiconductors are South Korea's #1 export (~19% of the total), powered by Samsung and SK Hynix."}, {"n": "Spain", "c": "es", "x": "Cars", "t": "Cars are Spain's top export; it's Europe's second-largest vehicle maker after Germany."}, {"n": "Sweden", "c": "se", "x": "Cars", "t": "Cars top Sweden's exports — Volvo and Scania anchor a strong auto sector — ahead of refined petroleum and medicines."}, {"n": "Switzerland", "c": "ch", "x": "Gold", "t": "Switzerland is the world's biggest gold exporter (~$100bn), reflecting its dominance in gold refining; pharma is its other pillar."}, {"n": "Tunisia", "c": "tn", "x": "Insulated wire", "t": "Insulated wire and cable is Tunisia's largest export (~14%), feeding Europe's car and electronics supply chains."}, {"n": "Turkey", "c": "tr", "x": "Cars", "t": "Cars lead Turkiye's exports; it's a major manufacturing hub supplying Germany, the UK and Italy."}, {"n": "United States", "c": "us", "x": "Refined petroleum", "t": "The US is the world's largest refined-petroleum exporter — its top single commodity, ahead of cars and crude oil."}, {"n": "Uruguay", "c": "uy", "x": "Beef", "t": "Beef is Uruguay's signature export (~15%); grass-fed Uruguayan beef ships heavily to China."}, {"n": "Uzbekistan", "c": "uz", "x": "Gold", "t": "Gold is ~38% of Uzbekistan's exports; it holds some of the world's largest deposits, including the giant Muruntau mine."}];
+const POOL=[...new Set(EX.map(e=>e.x))];
+const FLIP=["Austria","Bosnia & Herzegovina","Brazil","Croatia","Curacao","Egypt","Iran","Morocco","Panama","Senegal","South Africa"];
+const $=id=>document.getElementById(id);
+$('qtot').textContent=EX.length;
+let name='', order=[], idx=0, score=0, startTime=0, timer=null, answered=false;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function esc(s){return String(s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));}
+
+$('startBtn').onclick=async()=>{
+  name=$('name').value.trim();
+  if(name.length<2){ $('startErr').textContent='Please enter your name.'; $('startErr').classList.remove('hide'); return; }
+  $('startBtn').disabled=true; $('startErr').classList.add('hide');
+  let lb=[]; try{ lb=await getLeaderboard(); }catch(e){}
+  if(localStorage.getItem('bplex_'+name.toLowerCase()) || lb.some(r=>String(r.name).trim().toLowerCase()===name.toLowerCase())){
+    const mine=lb.find(r=>String(r.name).trim().toLowerCase()===name.toLowerCase());
+    showEnd(mine?mine.score:0,0,lb,true); return;
+  }
+  beginGame();
+};
+
+function beginGame(){
+  order=shuffle([...Array(EX.length).keys()]); idx=0; score=0; startTime=Date.now();
+  $('start').classList.add('hide'); $('end').classList.add('hide'); $('game').classList.remove('hide');
+  showQuestion();
+}
+function showQuestion(){
+  answered=false; const q=EX[order[idx]];
+  $('qnum').textContent=idx+1; $('score').textContent=score;
+  $('flag').src='https://flagcdn.com/h120/'+q.c+'.png'; $('flag').onerror=()=>{$('flag').style.visibility='hidden';};
+  $('flag').style.visibility='';
+  $('nation').textContent=q.n;
+  $('reveal').innerHTML='';
+  const others=shuffle(POOL.filter(x=>x!==q.x)).slice(0,3);
+  const opts=shuffle([q.x,...others]);
+  const box=$('opts'); box.innerHTML='';
+  opts.forEach(x=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=x; b.dataset.x=x; b.onclick=()=>judge(false,x); box.appendChild(b); });
+  let fill=$('timerfill'); fill.classList.remove('warn'); fill.style.width='100%';
+  const started=Date.now(); clearInterval(timer);
+  timer=setInterval(()=>{ const left=Math.max(0,CONFIG.SECONDS-(Date.now()-started)/1000);
+    fill.style.width=(left/CONFIG.SECONDS*100)+'%'; if(left<=3)fill.classList.add('warn');
+    if(left<=0){ clearInterval(timer); judge(true,null); } },80);
+}
+function judge(timeout,chosen){
+  if(answered)return; answered=true; clearInterval(timer);
+  const q=EX[order[idx]]; const ok=!timeout && chosen===q.x;
+  if(ok)score++; $('score').textContent=score;
+  [...document.querySelectorAll('.opt')].forEach(b=>{ b.disabled=true;
+    if(b.dataset.x===q.x)b.classList.add('correct');
+    else if(b.dataset.x===chosen)b.classList.add('wrong'); });
+  const head = ok?'<div class="rhead ok">&#10003; Correct!</div>'
+            : timeout?'<div class="rhead no">&#10007; Time’s up</div>'
+            : '<div class="rhead no">&#10007; Not quite</div>';
+  const flip=FLIP.includes(q.n);
+  $('reveal').innerHTML = head +
+    '<div class="rexp">'+esc(q.n)+' &middot; top export: '+esc(q.x)+(flip?' *':'')+'</div>'+
+    '<p class="rtriv">'+esc(q.t)+'</p>'+
+    (flip?'<p class="rnote">* A close call — this nation\'s top export shifts between years (or is hard to pin down), so this is the latest, clearest pick.</p>':'')+
+    '<button class="btn" id="nextBtn">'+(idx<EX.length-1?'Next &rsaquo;':'See results &rsaquo;')+'</button>';
+  $('nextBtn').onclick=()=>{ idx++; if(idx<EX.length) showQuestion(); else finish(); };
+}
+
+async function finish(){
+  $('game').classList.add('hide');
+  const timeMs=Date.now()-startTime;
+  localStorage.setItem('bplex_'+name.toLowerCase(),'1');
+  let lb=[]; try{ lb=await submitScore(name,score,EX.length,timeMs); }catch(e){}
+  if(!lb.some(r=>String(r.name).trim().toLowerCase()===name.toLowerCase())) lb.push({name,score,total:EX.length,timeMs});
+  lb.sort((a,b)=>b.score-a.score || a.timeMs-b.timeMs);
+  showEnd(score,timeMs,lb,false);
+}
+function showEnd(sc,timeMs,lb,already){
+  $('start').classList.add('hide'); $('game').classList.add('hide'); $('end').classList.remove('hide');
+  $('shareMsg').textContent='';
+  if(already){ $('finalScore').textContent=(sc!=null?sc+' / '+EX.length:'Already played');
+    $('finalSub').textContent="You've already played — one try each!"; $('shareBtn').classList.add('hide'); }
+  else { $('finalScore').textContent=sc+' / '+EX.length;
+    $('finalSub').textContent='Finished in '+Math.round(timeMs/1000)+'s. Nice one, '+name+'!';
+    const sb=$('shareBtn'); sb.classList.remove('hide'); sb.onclick=()=>shareScore(sc!=null?sc:0); }
+  renderLb(lb||[]);
+}
+function shareScore(sc){
+  const url=location.origin+location.pathname;
+  const text='I got '+sc+'/'+EX.length+' on the BPL Top Exports quiz ⚽ Do you know what each World Cup nation sells most?';
+  if(navigator.share){ navigator.share({title:'BPL Top Exports',text,url}).catch(()=>{}); return; }
+  const full=text+' '+url;
+  try{ navigator.clipboard.writeText(full); $('shareMsg').textContent='Link copied — opening WhatsApp…'; }catch(e){}
+  window.open('https://wa.me/?text='+encodeURIComponent(full),'_blank');
+}
+function fmtTime(ms){ if(!ms)return '—'; const s=Math.round(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function renderLb(lb){
+  const body=$('lbTable').querySelector('tbody');
+  if(!lb.length){ body.innerHTML='<tr><td colspan="4" class="muted" style="text-align:center;padding:18px">No scores yet — be the first!</td></tr>'; return; }
+  body.innerHTML=lb.slice(0,50).map((r,i)=>`<tr class="${name&&String(r.name).trim().toLowerCase()===name.toLowerCase()?'me':''}"><td class="rk">${i+1}</td><td>${esc(r.name)}</td><td class="num">${r.score}</td><td class="num" style="color:var(--muted);font-weight:500">${fmtTime(r.timeMs)}</td></tr>`).join('');
+}
+async function loadHomeLb(){
+  const status=$('homeLbStatus'), body=$('lbTableHome').querySelector('tbody');
+  try{ const lb=await getLeaderboard();
+    if(!lb.length){ status.textContent='No scores yet — be the first!'; body.innerHTML=''; return; }
+    status.textContent='';
+    body.innerHTML=lb.slice(0,50).map((r,i)=>`<tr><td class="rk">${i+1}</td><td>${esc(r.name)}</td><td class="num">${r.score}</td><td class="num" style="color:var(--muted);font-weight:500">${fmtTime(r.timeMs)}</td></tr>`).join('');
+  }catch(e){ status.textContent='Could not load the leaderboard right now.'; }
+}
+async function getLeaderboard(){
+  if(!CONFIG.API_URL) return [];
+  const r=await fetch(CONFIG.API_URL+'?game='+encodeURIComponent(CONFIG.GAME)); const j=await r.json(); return j.leaderboard||[];
+}
+async function submitScore(name,score,total,timeMs){
+  if(!CONFIG.API_URL) return [];
+  const r=await fetch(CONFIG.API_URL,{method:'POST',body:JSON.stringify({game:CONFIG.GAME,name,score,total,timeMs})});
+  const j=await r.json(); return j.leaderboard||[];
+}
+loadHomeLb();
+</script>
+</body>
+</html>
