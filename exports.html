@@ -177,8 +177,8 @@ function judge(timeout,chosen){
 async function finish(){
   $('game').classList.add('hide');
   const timeMs=Date.now()-startTime;
-  localStorage.setItem('bplex_'+name.toLowerCase(),'1');
-  let lb=[]; try{ lb=await submitScore(name,score,EX.length,timeMs); }catch(e){}
+  let lb=[], saved=false; try{ lb=await submitScore(name,score,EX.length,timeMs); saved=true; }catch(e){}
+  if(saved) localStorage.setItem('bplex_'+name.toLowerCase(),'1');
   if(!lb.some(r=>String(r.name).trim().toLowerCase()===name.toLowerCase())) lb.push({name,score,total:EX.length,timeMs});
   lb.sort((a,b)=>b.score-a.score || a.timeMs-b.timeMs);
   showEnd(score,timeMs,lb,false);

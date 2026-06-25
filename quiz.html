@@ -259,9 +259,9 @@ $('answer').addEventListener('keydown',e=>{ if(e.key==='Enter'&&!answered)judge(
 async function finish(){
   $('game').classList.add('hide');
   const timeMs=Date.now()-startTime;
-  localStorage.setItem('bplq_'+name.toLowerCase(),'1');
-  let lb=[];
-  try{ lb=await submitScore(name,score,Q.length,timeMs); }catch(e){}
+  let lb=[], saved=false;
+  try{ lb=await submitScore(name,score,Q.length,timeMs); saved=true; }catch(e){}
+  if(saved) localStorage.setItem('bplq_'+name.toLowerCase(),'1');
   // optimistic: ensure my row is in the board
   if(!lb.some(r=>String(r.name).trim().toLowerCase()===name.toLowerCase()))
     lb.push({name,score,total:Q.length,timeMs});
