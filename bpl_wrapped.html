@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BPL 2026 · Betting Premier League — Live Report</title>
+<title>BPL-wrapped · Betting Premier League — World Cup 2026</title>
 <meta property="og:type" content="website">
-<meta property="og:title" content="BPL Live Report · World Cup 2026">
-<meta property="og:description" content="The Betting Premier League story in data — form, streaks, and voting patterns.">
-<meta property="og:image" content="https://kc-siddharth.github.io/bpl-2026/branding/kc_share.png">
+<meta property="og:title" content="BPL-wrapped · World Cup 2026">
+<meta property="og:description" content="Your Betting Premier League season in data — earnings, rank, streaks, and voting profiles.">
+<meta property="og:image" content="https://kc-siddharth.github.io/bpl-2026/branding/kc_share_wrapped.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <link rel="icon" type="image/png" href="https://kc-siddharth.github.io/bpl-2026/branding/kc_favicon.png">
@@ -389,7 +389,6 @@ function render(active,MATCHES,live,votes){
     + "<br>Payment details are not shown.";
 
   document.getElementById('kpis').innerHTML=[
-   {v:settled+"<small style='font-size:13px;color:#8ba0b8'> / 72</small>",l:"Games settled",s:"Group stage"},
    {v:fmt0(potMoved),l:"Total pot moved",s:active.length+" active players"},
    {v:fmt0(bigGame.payout),l:"Biggest single payout",s:(bigGame.outcome||bigGame.home)+" (M"+bigGame.n+")"},
    {v:topEarner.net.toFixed(0)+"<small style='font-size:13px'> Rs</small>",l:"Biggest bankroll",s:topEarner.name},
