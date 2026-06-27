@@ -137,7 +137,7 @@ const CONFIG = {
   STANDINGS_CSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=338141506&single=true&output=csv",
   FIXTURES_CSV:  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=1376924317&single=true&output=csv",
   VOTES_CSV:     "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=2105139103&single=true&output=csv",
-  THROUGH_NOTE:  "Group stage · Rs.10 a game · winners split the losers' pot"
+  THROUGH_NOTE:  "Rs.10 a game in the groups, rising through the knockouts · winners split the losers' pot"
 };
 </script>
 
@@ -354,7 +354,7 @@ function readFixtures(rows){
   const h=rows[0];
   const ci={home:idx(h,'Home (H)'),away:idx(h,'Away (A)'),res:idx(h,'Result (H/D/A)'),
     out:idx(h,'Outcome'),win:idx(h,'Winners'),los:idx(h,'Losers'),
-    pot:idx(h,'Loser Pot (Rs)'),pay:idx(h,'Payout / Winner (Rs)'),n:0};
+    pot:idx(h,'Loser Pot (Rs)'),pay:idx(h,'Payout / Winner (Rs)'),stake:idx(h,'Buy-in (Rs)'),n:0};
   if(ci.pay<0) ci.pay=idx(h,'Payout / Winner');
   if(ci.pot<0) ci.pot=idx(h,'Loser Pot');
   const out=[];
@@ -364,7 +364,7 @@ function readFixtures(rows){
     out.push({n:num(r[0]),home:(r[ci.home]||'').trim(),away:(r[ci.away]||'').trim(),
       res, outcome:(r[ci.out]||'').trim(),
       winners:num(r[ci.win])||0,losers:num(r[ci.los])||0,
-      payout:pay,pot:num(r[ci.pot])||0});}
+      payout:pay,pot:num(r[ci.pot])||0,stake:(num(r[ci.stake])>0?num(r[ci.stake]):10)});}
   return out;
 }
 
@@ -507,10 +507,10 @@ function renderJourney(votes, MATCHES, active){
     const cast=picks[m.n]||{};
     const t={H:0,D:0,A:0}; for(const n in cast){ if(t[cast[n]]!==undefined) t[cast[n]]++; }
     const maj=(t.H>=t.D&&t.H>=t.A)?'H':(t.D>=t.A?'D':'A');
-    const def=m.n<25?'D':maj;
+    const def=m.n>=73 ? '' : (m.n<25?'D':maj);   // group: blank = majority pick; knockouts (M73+): no-show forfeits (never wins)
     active.forEach(p=>{ const n=p.name; let eff=cast[n];
       if(eff===undefined){ const jg=join[n]; if(jg==null||jg>m.n) return; eff=def; }
-      cum[n]+= (eff===m.res)?m.payout:-10; });
+      cum[n]+= (eff===m.res)?m.payout:-(m.stake||10); });
     const inGame=active.filter(p=>{const f=firstSeen[p.name]; return f!=null&&f<=m.n;}).map(p=>p.name);
     const sorted=[...inGame].sort((a,b)=>cum[b]-cum[a]);
     const rankOf={}; sorted.forEach((n,i)=>rankOf[n]=i+1);
