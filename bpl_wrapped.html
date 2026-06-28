@@ -35,7 +35,7 @@
   .kicker{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:12px;font-weight:700}
   h1{font-size:34px;margin:8px 0 4px;font-weight:800;letter-spacing:-.5px}
   .sub{color:var(--muted);font-size:14px}
-  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:26px 0 8px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 4px}
   .kpi{background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);
     border-radius:14px;padding:16px 14px}
   .kpi .v{font-size:22px;font-weight:800;letter-spacing:-.5px}
@@ -158,26 +158,44 @@ const CONFIG = {
 
   <div id="report" style="display:none">
 
-    <div class="splitTop">
-      <div class="splitTabs">
-        <button class="stab active" data-pane="vote">Find your profile</button>
-        <button class="stab" data-pane="story">The story so far</button>
+    <section>
+      <span class="tag">The Story So Far</span>
+      <h2 id="storyH2">The story so far</h2>
+      <div class="kpis" id="kpis"></div>
+    </section>
+
+    <section class="vote-sec">
+      <span class="tag">Voting Profiles</span>
+      <h2>Find your profile</h2>
+      <p class="lede">Pick your name to see your voting style, your full pick history, your hot and cold streaks, and who you vote most like.</p>
+      <select id="vplayer" class="vsel"></select>
+      <div id="vprofile"></div>
+    </section>
+
+    <style>
+      .jctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:6px 0 2px}
+      .jlab{display:flex;align-items:center;gap:6px;color:#8ba0b8;font-size:13px;font-weight:700}
+      .jctrl .vsel{margin:0}
+      .jcard{background:#111722;border:1px solid #243042;border-radius:14px;padding:16px 16px 12px;margin-top:16px}
+      .jct{font-size:13px;font-weight:700;color:#e8eef6;margin-bottom:10px}
+      .jct span{color:#8ba0b8;font-weight:500}
+      .jwrap{position:relative;height:250px}
+      @media(max-width:560px){.jwrap{height:210px}}
+    </style>
+    <section id="journeySec">
+      <span class="tag">Your Journey</span>
+      <h2>Earnings &amp; rank, game by game</h2>
+      <p class="lede">Pick your name to trace your bankroll and your rank across the season — and line up to three rivals against you.</p>
+      <div class="jctrl">
+        <label class="jlab">You<select id="jyou" class="vsel"></select></label>
+        <label class="jlab">vs<select id="jc1" class="vsel"></select></label>
+        <select id="jc2" class="vsel"></select>
+        <select id="jc3" class="vsel"></select>
       </div>
-      <div class="splitGrid">
-        <section class="vote-sec pane vactive" data-pane="vote">
-          <span class="tag">Voting Profiles</span>
-          <h2>Find your profile</h2>
-          <p class="lede">Pick your name to see your voting style, your full pick history, your hot and cold streaks, and who you vote most like.</p>
-          <select id="vplayer" class="vsel"></select>
-          <div id="vprofile"></div>
-        </section>
-        <section class="pane" data-pane="story">
-          <span class="tag">The Story So Far</span>
-          <h2 id="storyH2">The story so far</h2>
-          <div class="kpis" id="kpis"></div>
-        </section>
-      </div>
-    </div>
+      <div id="jhint" class="lede" style="margin-top:8px"></div>
+      <div class="jcard"><div class="jct">Cumulative net winnings (₹)</div><div class="jwrap"><canvas id="earnChart"></canvas></div></div>
+      <div class="jcard"><div class="jct">Rank over time <span>(1 = top of the table)</span></div><div class="jwrap"><canvas id="rankChart"></canvas></div></div>
+    </section>
 
     <section>
       <span class="tag">The Big Insight</span>
@@ -216,31 +234,6 @@ const CONFIG = {
           <div id="lossStreaks"></div>
         </div>
       </div>
-    </section>
-
-    <style>
-      .jctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:6px 0 2px}
-      .jlab{display:flex;align-items:center;gap:6px;color:#8ba0b8;font-size:13px;font-weight:700}
-      .jctrl .vsel{margin:0}
-      .jcard{background:#111722;border:1px solid #243042;border-radius:14px;padding:16px 16px 12px;margin-top:16px}
-      .jct{font-size:13px;font-weight:700;color:#e8eef6;margin-bottom:10px}
-      .jct span{color:#8ba0b8;font-weight:500}
-      .jwrap{position:relative;height:250px}
-      @media(max-width:560px){.jwrap{height:210px}}
-    </style>
-    <section id="journeySec">
-      <span class="tag">Your Journey</span>
-      <h2>Earnings &amp; rank, game by game</h2>
-      <p class="lede">Pick your name to trace your bankroll and your rank across the season — and line up to three rivals against you.</p>
-      <div class="jctrl">
-        <label class="jlab">You<select id="jyou" class="vsel"></select></label>
-        <label class="jlab">vs<select id="jc1" class="vsel"></select></label>
-        <select id="jc2" class="vsel"></select>
-        <select id="jc3" class="vsel"></select>
-      </div>
-      <div id="jhint" class="lede" style="margin-top:8px"></div>
-      <div class="jcard"><div class="jct">Cumulative net winnings (₹)</div><div class="jwrap"><canvas id="earnChart"></canvas></div></div>
-      <div class="jcard"><div class="jct">Rank over time <span>(1 = top of the table)</span></div><div class="jwrap"><canvas id="rankChart"></canvas></div></div>
     </section>
 
     <section class="vote-sec">
