@@ -137,7 +137,7 @@ const CONFIG = {
   STANDINGS_CSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=338141506&single=true&output=csv",
   FIXTURES_CSV:  "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=1376924317&single=true&output=csv",
   VOTES_CSV:     "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=2105139103&single=true&output=csv",
-  THROUGH_NOTE:  "Rs.10 a game in the groups, rising through the knockouts · winners split the losers' pot"
+  THROUGH_NOTE:  "Group stage · Rs.10 a game · winners split the losers' pot"
 };
 </script>
 
@@ -377,7 +377,7 @@ function render(active,MATCHES,live,votes){
 
   document.getElementById('subline').textContent =
     CONFIG.THROUGH_NOTE+" · settled through Match "+Math.max(...MATCHES.map(m=>m.n));
-  document.getElementById('h1').textContent = "World Cup Wrapped";
+  document.getElementById('h1').textContent = "WC 2026 · Group Stage Wrapped";
   const _sH2=document.getElementById('storyH2'); if(_sH2) _sH2.textContent = settled+" games in";
   document.getElementById('foot').innerHTML = (live
     ? "BPL 2026 — live report, refreshes from the sheet on each open · group stage runs 72 games."
@@ -650,7 +650,8 @@ function renderVoting(votes, MATCHES, active){
   const names=[...votes.players].filter(n=>voters.has(n)).sort();
   sel.innerHTML='<option value="">— find your name —</option>'+names.map(n=>`<option value="${n.replace(/"/g,'&quot;')}">${n}</option>`).join('');
   sel.value='';
-  const update=()=>{const v=sel.value; document.getElementById('vprofile').innerHTML = v ? profileHTML(v) : emptyProfile();};
+  const update=()=>{const v=sel.value; document.getElementById('vprofile').innerHTML = v ? profileHTML(v) : emptyProfile();
+    const jy=document.getElementById('jyou'); if(jy && v){ jy.value=v; jy.dispatchEvent(new Event('change')); }};
   sel.onchange=update; update();
 
   let cr=0,tot=0; MATCHES.forEach(m=>{if(majBy[m.n]){tot++; if(majBy[m.n]===m.res)cr++;}});
