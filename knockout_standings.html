@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPL 2026 · Knockout Standings</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="BPL Knockout Standings · World Cup 2026">
+<meta property="og:description" content="The Betting Premier League knockout table — net winnings, correct calls, and rank movers.">
+<meta property="og:image" content="https://kc-siddharth.github.io/bpl-2026/branding/kc_share_monogram.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" type="image/png" href="https://kc-siddharth.github.io/bpl-2026/branding/kc_favicon.png">
+<link rel="apple-touch-icon" href="https://kc-siddharth.github.io/bpl-2026/branding/apple-touch-icon.png">
+<style>
+  :root{--bg:#0b1018;--line:#222c3b;--txt:#eaf0f7;--muted:#8194ac;
+    --gold:#f4c64a;--green:#3ddc97;--red:#ff6b6b;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);line-height:1.5;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:40px 26px 60px}
+
+  /* header */
+  .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .kcmark{width:54px;height:54px;flex:none;display:block}
+  .backhub{display:inline-flex;align-items:center;gap:5px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:5px 13px;margin-bottom:18px;transition:border-color .15s,color .15s}
+  .backhub:hover{border-color:var(--gold);color:var(--gold)}
+  h1{font-size:34px;line-height:1.04;margin:0;font-weight:800;letter-spacing:-.5px;text-transform:uppercase}
+  .stand{color:var(--gold);font-size:15px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;margin-top:8px}
+  .hmeta{text-align:right;color:var(--muted);font-size:13px;white-space:nowrap}
+  .hmeta .g{color:var(--txt);font-weight:600}
+  .refresh{margin-top:9px;background:transparent;color:var(--muted);border:1px solid var(--line);
+    border-radius:8px;padding:5px 13px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+  .refresh:hover{border-color:var(--gold);color:var(--txt)}
+  .refresh:disabled{opacity:.55;cursor:default}
+  .rule{height:3px;background:var(--gold);border-radius:2px;margin:16px 0 22px;opacity:.9}
+
+  /* lists */
+  .lists{display:flex;gap:0}
+  .listcol{flex:1;min-width:0}
+  .row{display:flex;align-items:center;position:relative;padding:9px 8px 9px 16px;
+    border-bottom:1px solid rgba(255,255,255,.04)}
+  .row::before{content:"";position:absolute;left:2px;top:50%;transform:translateY(-50%);
+    width:4px;height:58%;border-radius:3px;background:var(--accent,transparent)}
+  .row.pos{--accent:var(--green)} .row.neg{--accent:var(--red)}
+  .row.alt{background:rgba(255,255,255,.022)}
+  .row.head{border-bottom:1px solid var(--line);padding-top:0;padding-bottom:8px}
+  .row.head::before{display:none}
+  .row.head span{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+  .c-rk{flex:0 0 32px;color:var(--muted);font-weight:700;font-variant-numeric:tabular-nums}
+  .c-pl{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .c-ac{flex:0 0 56px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .c-net{flex:0 0 96px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .c-net.pos{color:var(--green)} .c-net.neg{color:var(--red)}
+
+  .dots{display:none}
+
+  /* rank movers (climbers + fallers) */
+  #climbers{display:none;margin:2px 0 30px}
+  .csince{font-size:12px;color:var(--muted);font-weight:600;margin:0 0 12px}
+  .movers{display:flex;gap:44px}
+  .mcard{flex:1;min-width:0}
+  .ctitle{font-size:17px;font-weight:800;letter-spacing:-.3px;margin:0 0 9px}
+  .crow{display:flex;align-items:center;padding:9px 6px;border-bottom:1px solid var(--line)}
+  .crow .cpl{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .crow .cmv{flex:0 0 72px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .crow .cmv.up{color:var(--green)} .crow .cmv.down{color:var(--red)}
+  .crow .cto{flex:0 0 68px;text-align:right;font-variant-numeric:tabular-nums}
+  .crow.chead span{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+  @media(max-width:640px){ .movers{flex-direction:column;gap:22px} }
+
+  footer{color:var(--muted);font-size:12.5px;margin-top:24px}
+  #status{text-align:center;padding:70px 20px;color:var(--muted)}
+  .spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--gold);
+    border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 14px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+
+  /* desktop: divider + breathing room between the two lists */
+  @media(min-width:641px){
+    .listcol{padding-right:44px}
+    .listcol+.listcol{padding-right:0;padding-left:44px;border-left:1px solid var(--line)}
+    .swipehint{display:none}
+  }
+  /* mobile: swipeable carousel */
+  @media(max-width:640px){
+    .wrap{padding:28px 16px 50px}
+    h1{font-size:25px}
+    .kcmark{width:46px;height:46px}
+    .head-row{flex-direction:column;align-items:flex-start}
+    .hmeta{text-align:left}
+    .lists{gap:0;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .lists::-webkit-scrollbar{display:none}
+    .listcol{flex:0 0 100%;scroll-snap-align:start;padding:0 2px}
+    .dots{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:16px}
+    .dot{width:9px;height:9px;border-radius:50%;background:var(--line);border:none;cursor:pointer;
+      padding:0;transition:width .2s,background .2s}
+    .dot.on{background:var(--gold);width:24px;border-radius:5px}
+    .swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:9px}
+  }
+</style>
+</head>
+<body>
+
+<script>
+const CONFIG = {
+  // Knockout sheet published-to-web CSV links. PASTE YOURS HERE:
+  //   In the knockout sheet: File ▸ Share ▸ Publish to web ▸ (the Standings tab) ▸ CSV ▸ copy link  → STANDINGS_CSV
+  //   repeat for the Fixtures tab → FIXTURES_CSV
+  STANDINGS_CSV: "PASTE_KNOCKOUT_STANDINGS_CSV_URL_HERE",
+  FIXTURES_CSV:  "PASTE_KNOCKOUT_FIXTURES_CSV_URL_HERE",
+  TOTAL_GAMES:   32
+};
+</script>
+
+<div class="wrap">
+  <a class="backhub" href="index.html">‹ All games</a>
+  <div class="head-row">
+    <div class="brand">
+      <img class="kcmark" src="branding/kc_monogram.png" alt="KC">
+      <div>
+        <h1>Betting Premier League 2026</h1>
+        <div class="stand">Knockout Standings</div>
+      </div>
+    </div>
+    <div class="hmeta">
+      <div class="g" id="metaGames">&nbsp;</div>
+      <div id="metaDate">&nbsp;</div>
+      <button class="refresh" id="refreshBtn" onclick="refresh(this)">↻ Refresh</button>
+    </div>
+  </div>
+  <div class="rule"></div>
+
+  <div id="status"><div class="spin"></div>Loading the latest knockout standings…</div>
+
+  <div id="board" style="display:none">
+    <div id="climbers"></div>
+    <div class="lists" id="lists">
+      <div class="listcol" id="col0"></div>
+      <div class="listcol" id="col1"></div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="swipehint" id="swipehint"></div>
+    <footer id="foot"></footer>
+  </div>
+</div>
+
+<script>
+const fmt = n => (n>=0?"+":"−")+"₹"+Math.abs(n).toFixed(2);
+const accFmt = a => (+a.toFixed(1))+"%";
+const num = s => { const v=parseFloat(String(s).replace(/[^0-9.\-]/g,'')); return isNaN(v)?null:v; };
+const MON={Jan:"January",Feb:"February",Mar:"March",Apr:"April",May:"May",Jun:"June",
+  Jul:"July",Aug:"August",Sep:"September",Oct:"October",Nov:"November",Dec:"December"};
+function dateFull(d){ if(!d) return ""; const p=d.trim().split(/\s+/);
+  return p.length>=2 ? `${p[0]} ${MON[p[1]]||p[1]} 2026` : d; }
+function parseCSV(text){const rows=[];let row=[],f='',q=false;for(let i=0;i<text.length;i++){const c=text[i];
+  if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+  else{if(c==='"')q=true;else if(c===','){row.push(f);f='';}else if(c==='\n'){row.push(f);rows.push(row);row=[];f='';}else if(c==='\r'){}else f+=c;}}
+  if(f.length||row.length){row.push(f);rows.push(row);}return rows;}
+const idx=(h,n)=>h.findIndex(x=>x.trim().toLowerCase()===n.toLowerCase());
+const bust=u=>u+(u.includes('?')?'&':'?')+'_='+Date.now();   // cache-bust so refresh pulls fresh data
+
+/* no static fallback for the knockout page — it shows live data only */
+const SNAP = { players:[], last:{n:0,date:""}, settled:0 };
+
+function readStandings(rows){
+  const h=rows[0],ci={p:idx(h,'Player'),g:idx(h,'Games Played'),c:idx(h,'Correct Calls'),n:idx(h,'Net Winnings (Rs)')};
+  if(ci.n<0)ci.n=idx(h,'Net Winnings');
+  const out=[];
+  for(let i=1;i<rows.length;i++){const r=rows[i];if(!r[ci.p])continue;
+    const gp=num(r[ci.g])||0,net=num(r[ci.n]);if(net===null||gp===0)continue;
+    out.push({name:r[ci.p].trim(),gp,correct:num(r[ci.c])||0,net,acc:(num(r[ci.c])||0)/gp*100});}
+  return out;
+}
+function readLast(rows){
+  const h=rows[0],ci={d:idx(h,'Date'),res:idx(h,'Result (H/D/A)'),pay:idx(h,'Payout / Winner (Rs)')};
+  if(ci.pay<0)ci.pay=idx(h,'Payout / Winner');
+  let last=null,settled=0;
+  for(let i=1;i<rows.length;i++){const r=rows[i];
+    if(num(r[ci.pay])===null||!(r[ci.res]||'').trim())continue;
+    settled++; const n=num(r[0]);
+    if(!last||n>last.n) last={n,date:(r[ci.d]||'').trim()};}
+  return {last,settled};
+}
+function readSnapshot(rows){
+  const h=rows[0];
+  const pi=idx(h,'Snap Player'), ri=idx(h,'Snap Rank'), di=idx(h,'Snap Date');
+  if(pi<0||ri<0) return {prev:{},date:''};
+  const prev={};
+  for(let i=1;i<rows.length;i++){const r=rows[i];
+    if(pi<r.length && r[pi] && r[pi].trim()){const rk=num(r[ri]); if(rk!==null) prev[r[pi].trim()]=rk;}}
+  const date=(di>=0 && rows[1] && rows[1][di])?rows[1][di].trim():'';
+  return {prev,date};
+}
+
+async function load(){
+  if(CONFIG.STANDINGS_CSV && CONFIG.FIXTURES_CSV && !CONFIG.STANDINGS_CSV.startsWith('PASTE')){
+    try{
+      const [s,f]=await Promise.all([
+        fetch(bust(CONFIG.STANDINGS_CSV)).then(r=>r.text()),
+        fetch(bust(CONFIG.FIXTURES_CSV)).then(r=>r.text())]);
+      const sr=parseCSV(s);
+      const players=readStandings(sr);
+      const snap=readSnapshot(sr);
+      const {last,settled}=readLast(parseCSV(f));
+      if(players.length && last){ return render(players,last,settled,true,snap); }
+    }catch(e){/* blocked / not published yet */}
+  }
+  const players=SNAP.players.map(p=>({name:p[0],gp:p[1],correct:p[2],net:p[3],acc:p[1]?p[2]/p[1]*100:0})).filter(p=>p.gp>0);
+  if(players.length){ render(players,SNAP.last,SNAP.settled,false,{prev:{},date:''}); }
+  else { document.getElementById('status').innerHTML='Knockout standings will appear here once the sheet is published to the web.'; }
+}
+
+async function refresh(btn){
+  if(!(CONFIG.STANDINGS_CSV && CONFIG.FIXTURES_CSV) || CONFIG.STANDINGS_CSV.startsWith('PASTE')) return;
+  const label=btn.textContent; btn.disabled=true; btn.textContent='Refreshing…';
+  try{
+    const [s,f]=await Promise.all([
+      fetch(bust(CONFIG.STANDINGS_CSV)).then(r=>r.text()),
+      fetch(bust(CONFIG.FIXTURES_CSV)).then(r=>r.text())]);
+    const sr=parseCSV(s);
+    const players=readStandings(sr);
+    const snap=readSnapshot(sr);
+    const {last,settled}=readLast(parseCSV(f));
+    if(players.length && last) render(players,last,settled,true,snap);
+  }catch(e){}
+  btn.textContent=label; btn.disabled=false;
+}
+
+function buildColumn(slice,rankStart){
+  const head=`<div class="row head"><span class="c-rk">#</span><span class="c-pl">Player</span><span class="c-ac">Acc</span><span class="c-net">Net</span></div>`;
+  const rows=slice.map((p,i)=>{const rank=rankStart+i;const neg=p.net<0;
+    return `<div class="row ${neg?'neg':'pos'}${i%2?' alt':''}">
+      <span class="c-rk">${rank}</span>
+      <span class="c-pl">${p.name}</span>
+      <span class="c-ac">${accFmt(p.acc)}</span>
+      <span class="c-net ${neg?'neg':'pos'}">${fmt(p.net)}</span></div>`;}).join('');
+  return head+rows;
+}
+
+function setupCarousel(){
+  const lists=document.getElementById('lists'), dots=document.getElementById('dots');
+  dots.innerHTML='<button class="dot on" data-i="0"></button><button class="dot" data-i="1"></button>';
+  const dotEls=[...dots.children], hint=document.getElementById('swipehint');
+  dotEls.forEach(d=>d.onclick=()=>lists.scrollTo({left:(+d.dataset.i)*lists.clientWidth,behavior:'smooth'}));
+  lists.addEventListener('scroll',()=>{
+    const i=Math.round(lists.scrollLeft/lists.clientWidth);
+    dotEls.forEach((d,j)=>d.classList.toggle('on',j===i));
+    if(hint) hint.style.visibility=i===0?'visible':'hidden';
+  });
+}
+
+function render(players,last,settled,live,snap){
+  document.getElementById('status').style.display='none';
+  document.getElementById('board').style.display='block';
+
+  document.getElementById('metaGames').textContent=`Knockout stage · After ${settled} of ${CONFIG.TOTAL_GAMES} games`;
+  document.getElementById('metaDate').textContent=dateFull(last.date);
+
+  const ranked=[...players].sort((a,b)=>b.net-a.net);
+  renderClimbers(ranked, snap);
+  const half=Math.ceil(ranked.length/2);
+  document.getElementById('col0').innerHTML=buildColumn(ranked.slice(0,half),1);
+  document.getElementById('col1').innerHTML=buildColumn(ranked.slice(half),half+1);
+
+  document.getElementById('swipehint').textContent=`Swipe for ranks ${half+1}–${ranked.length} →`;
+  setupCarousel();
+
+  document.getElementById('foot').innerHTML=
+    `Ranked by net winnings since game 73 · ${ranked.length} players in`+
+    (live?` · <span style="color:var(--green)">live</span>`:` · saved snapshot`);
+}
+
+function renderClimbers(ranked, snap){
+  const el=document.getElementById('climbers');
+  if(!el) return;
+  if(!snap || !snap.prev || !Object.keys(snap.prev).length){ el.style.display='none'; el.innerHTML=''; return; }
+  const cur={}; ranked.forEach((p,i)=>cur[p.name]=i+1);
+  const moves=Object.keys(snap.prev).filter(n=>cur[n]).map(n=>({name:n, move:snap.prev[n]-cur[n], to:cur[n]}));
+  const climbers=moves.filter(c=>c.move>0).sort((a,b)=>b.move-a.move || a.to-b.to).slice(0,5);
+  const fallers =moves.filter(c=>c.move<0).sort((a,b)=>a.move-b.move || a.to-b.to).slice(0,5);
+  if(!climbers.length && !fallers.length){ el.style.display='none'; el.innerHTML=''; return; }
+  el.style.display='block';
+  const card=(title,list,cls,arrow)=>{
+    if(!list.length) return '';
+    const head=`<div class="crow chead"><span class="cpl">Player</span><span class="cmv">Move</span><span class="cto">To rank</span></div>`;
+    const body=list.map(c=>`<div class="crow"><span class="cpl">${c.name}</span><span class="cmv ${cls}">${arrow} ${Math.abs(c.move)}</span><span class="cto">${c.to}</span></div>`).join('');
+    return `<div class="mcard"><div class="ctitle">${title}</div>${head}${body}</div>`;
+  };
+  el.innerHTML=(snap.date?`<div class="csince">Movement since ${snap.date}</div>`:'')+
+    `<div class="movers">`+
+    card('Top 5 rank climbers',climbers,'up','▲')+
+    card('Top 5 rank fallers',fallers,'down','▼')+
+    `</div>`;
+}
+load();
+</script>
+</body>
+</html>
