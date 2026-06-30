@@ -299,12 +299,14 @@ async function load(){
         fetch(CONFIG.STANDINGS_CSV).then(r=>r.text()),
         fetch(CONFIG.FIXTURES_CSV).then(r=>r.text())
       ]);
-      const players = readStandings(parseCSV(sRaw));
+      const standNet = readStandings(parseCSV(sRaw));
       const matches = readFixtures(parseCSV(fRaw));
       let votes=null;
       if(CONFIG.VOTES_CSV){
         try{ const vRaw=await fetch(CONFIG.VOTES_CSV).then(r=>r.text()); votes=readVotes(parseCSV(vRaw)); }catch(e){}
       }
+      // group-only net: reconstruct from votes (caps at game 72) so knockout net never leaks in
+      const players = (votes ? reconstructActive(votes,matches) : standNet);
       if(players.length && matches.length){ return render(players,matches,true,votes); }
     }catch(e){ /* fetch blocked (e.g. local file) — fall back to snapshot */ }
   }
@@ -323,7 +325,7 @@ function readVotes(rows){
   for(let k=0;k<cols.length;k++){ const v=joinRow?parseInt(String(joinRow[cols[k]]||'').replace(/[^0-9]/g,''),10):NaN; join[players[k]]=isNaN(v)?null:v; }
   const picks={};
   for(let i=1;i<rows.length;i++){const r=rows[i];const mn=parseInt(r[0],10);
-    if(!mn || isNaN(mn)) continue;
+    if(!mn || isNaN(mn) || mn>72) continue;   // group stage only
     const mp={};
     for(let k=0;k<cols.length;k++){const v=(r[cols[k]]||'').trim().toUpperCase();
       if(v==='H'||v==='D'||v==='A') mp[players[k]]=v;}
@@ -352,6 +354,7 @@ function readFixtures(rows){
   if(ci.pot<0) ci.pot=idx(h,'Loser Pot');
   const out=[];
   for(let i=1;i<rows.length;i++){const r=rows[i];
+    if((num(r[0])||0)>72)continue;            // group stage only (matches 1-72)
     const pay=num(r[ci.pay]); const res=(r[ci.res]||'').trim();
     if(pay===null||!res)continue;             // only settled games
     out.push({n:num(r[0]),home:(r[ci.home]||'').trim(),away:(r[ci.away]||'').trim(),
@@ -359,6 +362,31 @@ function readFixtures(rows){
       winners:num(r[ci.win])||0,losers:num(r[ci.los])||0,
       payout:pay,pot:num(r[ci.pot])||0,stake:(num(r[ci.stake])>0?num(r[ci.stake]):10)});}
   return out;
+}
+
+/* Group-only player table reconstructed from votes+fixtures (caps at game 72,
+   so it ignores the knockout net that now lives in the master Standings). */
+function reconstructActive(votes,MATCHES){
+  if(!votes||!votes.picks) return [];
+  const join=votes.join||{}, picks=votes.picks||{};
+  const ms=[...MATCHES].filter(m=>m.n<=72).sort((a,b)=>a.n-b.n);
+  const agg={};
+  ms.forEach(m=>{
+    const cast=picks[m.n]||{};
+    const t={H:0,D:0,A:0}; for(const n in cast){ if(t[cast[n]]!==undefined) t[cast[n]]++; }
+    const maj=(t.H>=t.D&&t.H>=t.A)?'H':(t.D>=t.A?'D':'A');
+    const def=m.n<25?'D':maj;
+    votes.players.forEach(n=>{
+      const jg=join[n]; if(jg==null||jg>m.n) return;          // not eligible yet
+      let eff=cast[n]; const voted=(eff!==undefined); if(!voted) eff=def;
+      const a=agg[n]||(agg[n]={net:0,gp:0,correct:0});
+      a.gp++;
+      if(eff===m.res){ a.net+=m.payout; if(voted) a.correct++; }
+      else a.net-=m.stake;
+    });
+  });
+  return Object.keys(agg).map(n=>({name:n,net:agg[n].net,correct:agg[n].correct,
+    gp:agg[n].gp,acc:agg[n].gp?agg[n].correct/agg[n].gp*100:0})).filter(p=>p.gp>0);
 }
 
 /* ---------- render ---------- */
