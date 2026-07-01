@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPL 2026 · Final Standings</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="BPL Final Standings · World Cup 2026">
+<meta property="og:description" content="The full-tournament table — group stage and knockouts combined.">
+<meta property="og:image" content="https://kc-siddharth.github.io/bpl-2026/branding/kc_share_monogram.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" type="image/png" href="https://kc-siddharth.github.io/bpl-2026/branding/kc_favicon.png">
+<link rel="apple-touch-icon" href="https://kc-siddharth.github.io/bpl-2026/branding/apple-touch-icon.png">
+<style>
+  :root{--bg:#0b1018;--line:#222c3b;--txt:#eaf0f7;--muted:#8194ac;
+    --gold:#f4c64a;--green:#3ddc97;--red:#ff6b6b;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);line-height:1.5;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:40px 26px 60px}
+  .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .kcmark{width:54px;height:54px;flex:none;display:block}
+  .backhub{display:inline-flex;align-items:center;gap:5px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:5px 13px;margin-bottom:18px;transition:border-color .15s,color .15s}
+  .backhub:hover{border-color:var(--gold);color:var(--gold)}
+  h1{font-size:34px;line-height:1.04;margin:0;font-weight:800;letter-spacing:-.5px;text-transform:uppercase}
+  .stand{color:var(--gold);font-size:15px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;margin-top:8px}
+  .hmeta{text-align:right;color:var(--muted);font-size:13px;white-space:nowrap}
+  .hmeta .g{color:var(--txt);font-weight:600}
+  .refresh{margin-top:9px;background:transparent;color:var(--muted);border:1px solid var(--line);
+    border-radius:8px;padding:5px 13px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+  .refresh:hover{border-color:var(--gold);color:var(--txt)}
+  .refresh:disabled{opacity:.55;cursor:default}
+  .rule{height:3px;background:var(--gold);border-radius:2px;margin:16px 0 22px;opacity:.9}
+  .lists{display:flex;gap:0}
+  .listcol{flex:1;min-width:0}
+  .row{display:flex;align-items:center;position:relative;padding:9px 8px 9px 16px;
+    border-bottom:1px solid rgba(255,255,255,.04)}
+  .row::before{content:"";position:absolute;left:2px;top:50%;transform:translateY(-50%);
+    width:4px;height:58%;border-radius:3px;background:var(--accent,transparent)}
+  .row.pos{--accent:var(--green)} .row.neg{--accent:var(--red)}
+  .row.alt{background:rgba(255,255,255,.022)}
+  .row.head{border-bottom:1px solid var(--line);padding-top:0;padding-bottom:8px}
+  .row.head::before{display:none}
+  .row.head span{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;font-weight:700}
+  .c-rk{flex:0 0 32px;color:var(--muted);font-weight:700;font-variant-numeric:tabular-nums}
+  .c-pl{flex:1;min-width:0;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .c-ac{flex:0 0 56px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .c-net{flex:0 0 96px;text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .c-net.pos{color:var(--green)} .c-net.neg{color:var(--red)}
+  .dots{display:none}
+  footer{color:var(--muted);font-size:12.5px;margin-top:24px}
+  #status{text-align:center;padding:70px 20px;color:var(--muted)}
+  .spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--gold);
+    border-radius:50%;animation:sp 1s linear infinite;margin:0 auto 14px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  @media(min-width:641px){
+    .listcol{padding-right:44px}
+    .listcol+.listcol{padding-right:0;padding-left:44px;border-left:1px solid var(--line)}
+    .swipehint{display:none}
+  }
+  @media(max-width:640px){
+    .wrap{padding:28px 16px 50px}
+    h1{font-size:25px}
+    .kcmark{width:46px;height:46px}
+    .head-row{flex-direction:column;align-items:flex-start}
+    .hmeta{text-align:left}
+    .lists{gap:0;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .lists::-webkit-scrollbar{display:none}
+    .listcol{flex:0 0 100%;scroll-snap-align:start;padding:0 2px}
+    .dots{display:flex;justify-content:center;align-items:center;gap:9px;margin-top:16px}
+    .dot{width:9px;height:9px;border-radius:50%;background:var(--line);border:none;cursor:pointer;
+      padding:0;transition:width .2s,background .2s}
+    .dot.on{background:var(--gold);width:24px;border-radius:5px}
+    .swipehint{font-size:11.5px;color:var(--muted);text-align:center;margin-top:9px}
+  }
+</style>
+</head>
+<body>
+
+<script>
+const CONFIG = {
+  // Master sheet (group stage) — Votes + Fixtures, used to reconstruct clean group net (games 1-72)
+  MASTER_VOTES_CSV:    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=2105139103&single=true&output=csv",
+  MASTER_FIXTURES_CSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSNYHhcC-4lizOpUph6O5iqCSGj9Aqsj81DJFJNhMZZe0YiroB1I_5mEW1x65S2_ff9RCWBWCIxpepy/pub?gid=1376924317&single=true&output=csv",
+  // Knockout sheet — Standings tab (net winnings for games 73+)
+  KO_STANDINGS_CSV:    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSv75X-Z1WoaiMQ1G8mWZQLUPH2e2M-mQ1OG9R8EPXdLHx_8WllnGscMucBQJC54Avvw_mBdBfdvMT7/pub?gid=1027208474&single=true&output=csv"
+};
+</script>
+
+<div class="wrap">
+  <a class="backhub" href="index.html">‹ All games</a>
+  <div class="head-row">
+    <div class="brand">
+      <img class="kcmark" src="branding/kc_monogram.png" alt="KC">
+      <div>
+        <h1>Betting Premier League 2026</h1>
+        <div class="stand">Final Standings</div>
+      </div>
+    </div>
+    <div class="hmeta">
+      <div class="g" id="metaGames">&nbsp;</div>
+      <div id="metaDate">group + knockout combined</div>
+      <button class="refresh" id="refreshBtn" onclick="load(this)">↻ Refresh</button>
+    </div>
+  </div>
+  <div class="rule"></div>
+
+  <div id="status"><div class="spin"></div>Building the final table…</div>
+
+  <div id="board" style="display:none">
+    <div class="lists" id="lists">
+      <div class="listcol" id="col0"></div>
+      <div class="listcol" id="col1"></div>
+    </div>
+    <div class="dots" id="dots"></div>
+    <div class="swipehint" id="swipehint"></div>
+    <footer id="foot"></footer>
+  </div>
+</div>
+
+<script>
+const fmt = n => (n>=0?"+":"−")+"₹"+Math.abs(n).toFixed(2);
+const accFmt = a => (+a.toFixed(1))+"%";
+const num = s => { const v=parseFloat(String(s).replace(/[^0-9.\-]/g,'')); return isNaN(v)?null:v; };
+function parseCSV(text){const rows=[];let row=[],f='',q=false;for(let i=0;i<text.length;i++){const c=text[i];
+  if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++;}else q=false;}else f+=c;}
+  else{if(c==='"')q=true;else if(c===','){row.push(f);f='';}else if(c==='\n'){row.push(f);rows.push(row);row=[];f='';}else if(c==='\r'){}else f+=c;}}
+  if(f.length||row.length){row.push(f);rows.push(row);}return rows;}
+const idx=(h,n)=>h.findIndex(x=>x.trim().toLowerCase()===n.toLowerCase());
+const bust=u=>u+(u.includes('?')?'&':'?')+'_='+Date.now();
+
+/* ---- group stage: reconstruct clean net for games 1-72 from master Votes + Fixtures ---- */
+function readVotes(rows){
+  if(!rows || rows.length<2) return null;
+  const h=rows[0]; const players=[], cols=[];
+  for(let c=3;c<h.length;c++){ if(h[c] && h[c].trim()){ players.push(h[c].trim()); cols.push(c); } }
+  const join={}; let joinRow=null;
+  for(let i=1;i<rows.length;i++){ if((rows[i][2]||'').toLowerCase().includes('join game')){ joinRow=rows[i]; break; } }
+  for(let k=0;k<cols.length;k++){ const v=joinRow?parseInt(String(joinRow[cols[k]]||'').replace(/[^0-9]/g,''),10):NaN; join[players[k]]=isNaN(v)?null:v; }
+  const picks={};
+  for(let i=1;i<rows.length;i++){const r=rows[i];const mn=parseInt(r[0],10);
+    if(!mn || isNaN(mn) || mn>72) continue;
+    const mp={};
+    for(let k=0;k<cols.length;k++){const v=(r[cols[k]]||'').trim().toUpperCase();
+      if(v==='H'||v==='D'||v==='A') mp[players[k]]=v;}
+    picks[mn]=mp;}
+  return players.length?{players,picks,join}:null;
+}
+function readFixtures(rows){
+  const h=rows[0];
+  const ci={home:idx(h,'Home (H)'),away:idx(h,'Away (A)'),res:idx(h,'Result (H/D/A)'),
+    win:idx(h,'Winners'),los:idx(h,'Losers'),pot:idx(h,'Loser Pot (Rs)'),
+    pay:idx(h,'Payout / Winner (Rs)'),stake:idx(h,'Buy-in (Rs)')};
+  if(ci.pay<0) ci.pay=idx(h,'Payout / Winner');
+  if(ci.pot<0) ci.pot=idx(h,'Loser Pot');
+  const out=[];
+  for(let i=1;i<rows.length;i++){const r=rows[i];
+    if((num(r[0])||0)>72)continue;                       // group stage only
+    const pay=num(r[ci.pay]); const res=(r[ci.res]||'').trim();
+    if(pay===null||!res)continue;
+    out.push({n:num(r[0]),res,payout:pay,pot:num(r[ci.pot])||0,
+      stake:(num(r[ci.stake])>0?num(r[ci.stake]):10)});}
+  return out;
+}
+function reconstructGroup(votes,MATCHES){
+  if(!votes||!votes.picks) return [];
+  const join=votes.join||{}, picks=votes.picks||{};
+  const ms=[...MATCHES].filter(m=>m.n<=72).sort((a,b)=>a.n-b.n);
+  const agg={};
+  ms.forEach(m=>{
+    const cast=picks[m.n]||{};
+    const t={H:0,D:0,A:0}; for(const n in cast){ if(t[cast[n]]!==undefined) t[cast[n]]++; }
+    const maj=(t.H>=t.D&&t.H>=t.A)?'H':(t.D>=t.A?'D':'A');
+    const def=m.n<25?'D':maj;
+    votes.players.forEach(n=>{
+      const jg=join[n]; if(jg==null||jg>m.n) return;
+      let eff=cast[n]; const voted=(eff!==undefined); if(!voted) eff=def;
+      const a=agg[n]||(agg[n]={net:0,gp:0,correct:0});
+      a.gp++;
+      if(eff===m.res){ a.net+=m.payout; if(voted) a.correct++; }
+      else a.net-=m.stake;
+    });
+  });
+  return Object.keys(agg).map(n=>({name:n,net:agg[n].net,correct:agg[n].correct,
+    gp:agg[n].gp})).filter(p=>p.gp>0);
+}
+
+/* ---- knockout stage: read net straight from the knockout Standings tab ---- */
+function readKO(rows){
+  const h=rows[0],ci={p:idx(h,'Player'),g:idx(h,'Games Played'),c:idx(h,'Correct Calls'),n:idx(h,'Net Winnings (Rs)')};
+  if(ci.n<0)ci.n=idx(h,'Net Winnings');
+  const out=[];
+  for(let i=1;i<rows.length;i++){const r=rows[i];if(!r[ci.p])continue;
+    const gp=num(r[ci.g])||0,net=num(r[ci.n]);if(net===null||gp===0)continue;
+    out.push({name:r[ci.p].trim(),gp,correct:num(r[ci.c])||0,net});}
+  return out;
+}
+
+/* ---- combine ---- */
+const normName=s=>String(s).trim().toLowerCase();
+function combine(group,ko){
+  const m={};
+  const get=k=>m[k]||(m[k]={name:'',gnet:0,ggp:0,gcor:0,knet:0,kgp:0,kcor:0});
+  group.forEach(p=>{const o=get(normName(p.name)); o.name=p.name; o.gnet=p.net;o.ggp=p.gp;o.gcor=p.correct;});
+  ko.forEach(p=>{const o=get(normName(p.name)); if(!o.name)o.name=p.name; o.knet=p.net;o.kgp=p.gp;o.kcor=p.correct;});
+  return Object.values(m).map(p=>{const gp=p.ggp+p.kgp,cor=p.gcor+p.kcor;
+    return {name:p.name, net:p.gnet+p.knet, gp, correct:cor, acc:gp?cor/gp*100:0, gnet:p.gnet, knet:p.knet};});
+}
+
+function buildColumn(slice,rankStart){
+  const head=`<div class="row head"><span class="c-rk">#</span><span class="c-pl">Player</span><span class="c-ac">Acc</span><span class="c-net">Net</span></div>`;
+  const rows=slice.map((p,i)=>{const rank=rankStart+i;const neg=p.net<0;
+    return `<div class="row ${neg?'neg':'pos'}${i%2?' alt':''}">
+      <span class="c-rk">${rank}</span>
+      <span class="c-pl">${p.name}</span>
+      <span class="c-ac">${accFmt(p.acc)}</span>
+      <span class="c-net ${neg?'neg':'pos'}">${fmt(p.net)}</span></div>`;}).join('');
+  return head+rows;
+}
+function setupCarousel(){
+  const lists=document.getElementById('lists'), dots=document.getElementById('dots');
+  dots.innerHTML='<button class="dot on" data-i="0"></button><button class="dot" data-i="1"></button>';
+  const dotEls=[...dots.children], hint=document.getElementById('swipehint');
+  dotEls.forEach(d=>d.onclick=()=>lists.scrollTo({left:(+d.dataset.i)*lists.clientWidth,behavior:'smooth'}));
+  lists.addEventListener('scroll',()=>{
+    const i=Math.round(lists.scrollLeft/lists.clientWidth);
+    dotEls.forEach((d,j)=>d.classList.toggle('on',j===i));
+    if(hint) hint.style.visibility=i===0?'visible':'hidden';
+  });
+}
+function render(players){
+  document.getElementById('status').style.display='none';
+  document.getElementById('board').style.display='block';
+  const ranked=[...players].sort((a,b)=>b.net-a.net);
+  document.getElementById('metaGames').textContent=`${ranked.length} players`;
+  const half=Math.ceil(ranked.length/2);
+  document.getElementById('col0').innerHTML=buildColumn(ranked.slice(0,half),1);
+  document.getElementById('col1').innerHTML=buildColumn(ranked.slice(half),half+1);
+  document.getElementById('swipehint').textContent=`Swipe for ranks ${half+1}–${ranked.length} →`;
+  setupCarousel();
+  document.getElementById('foot').innerHTML=`Group stage + knockouts, net winnings combined · ${ranked.length} players`;
+}
+
+async function load(btn){
+  if(btn){ btn.disabled=true; btn.textContent='Refreshing…'; }
+  try{
+    const [vRaw,fRaw,kRaw]=await Promise.all([
+      fetch(bust(CONFIG.MASTER_VOTES_CSV)).then(r=>r.text()),
+      fetch(bust(CONFIG.MASTER_FIXTURES_CSV)).then(r=>r.text()),
+      fetch(bust(CONFIG.KO_STANDINGS_CSV)).then(r=>r.text())]);
+    const group=reconstructGroup(readVotes(parseCSV(vRaw)), readFixtures(parseCSV(fRaw)));
+    const ko=readKO(parseCSV(kRaw));
+    const players=combine(group,ko);
+    if(players.length){ render(players); if(btn){btn.disabled=false;btn.textContent='↻ Refresh';} return; }
+  }catch(e){}
+  document.getElementById('status').innerHTML='Final standings will appear once both sheets are published to the web.';
+  if(btn){ btn.disabled=false; btn.textContent='↻ Refresh'; }
+}
+load();
+</script>
+</body>
+</html>
