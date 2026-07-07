@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- TODO: set page title -->
+<title>BPL 2026 &middot; National Dishes</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="BPL National Dishes">
+<meta property="og:description" content="Whose national dish is it? Guess 20 World Cup nations from their food.">
+<meta property="og:image" content="https://kc-siddharth.github.io/bpl-2026/branding/kc_share_dishes.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" type="image/png" href="https://kc-siddharth.github.io/bpl-2026/branding/kc_favicon.png">
+<link rel="apple-touch-icon" href="https://kc-siddharth.github.io/bpl-2026/branding/apple-touch-icon.png">
+<style>
+  :root{--bg:#0b1018;--panel:#141c27;--panel2:#1b2532;--line:#243042;--txt:#eaf0f7;
+    --muted:#8194ac;--gold:#f4c64a;--green:#3ddc97;--red:#ff6b6b;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);line-height:1.5;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:560px;margin:0 auto;padding:30px 18px 60px}
+  .backhub{display:inline-flex;align-items:center;gap:5px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;border:1px solid var(--line);border-radius:999px;padding:5px 13px;margin-bottom:18px;transition:border-color .15s,color .15s}
+  .backhub:hover{border-color:var(--gold);color:var(--gold)}
+  header{text-align:center;margin-bottom:18px}
+  .titlerow{display:flex;align-items:center;justify-content:center;gap:12px}
+  .kcmark{width:46px;height:46px;flex:none;display:block}
+  .kicker{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:11px;font-weight:700}
+  h1{font-size:27px;margin:6px 0 2px;font-weight:800;letter-spacing:-.5px}
+  .sub{color:var(--muted);font-size:13.5px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}
+  input[type=text]{width:100%;background:var(--panel2);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:16px;font-family:inherit;outline:none}
+  input[type=text]:focus{border-color:var(--gold)}
+  .btn{display:inline-block;width:100%;background:var(--gold);color:#0b1018;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:12px}
+  .btn:disabled{opacity:.5;cursor:default}
+  .muted{color:var(--muted);font-size:13px}
+  .hide{display:none}
+  .gtop{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:14px}
+  .gtop b{color:var(--txt)}
+  .timerbar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:20px}
+  .timerfill{height:100%;background:var(--gold);width:100%}
+  .timerfill.warn{background:var(--red)}
+  .nicklbl{text-align:center;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.14em;margin-bottom:8px}
+  .nick{text-align:center;font-size:27px;font-weight:800;letter-spacing:-.3px;color:var(--gold);margin:0 0 20px;line-height:1.2}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:14px 16px;font-size:15.5px;font-weight:600;color:var(--txt);cursor:pointer;font-family:inherit;transition:border-color .12s,background .12s}
+  .opt:hover:not(:disabled){border-color:var(--gold)}
+  .opt:disabled{cursor:default}
+  .opt.correct{background:rgba(61,220,151,.15);border-color:var(--green);color:#eafff6}
+  .opt.wrong{background:rgba(255,107,107,.12);border-color:var(--red)}
+  .reveal{margin-top:18px;border-top:1px solid var(--line);padding-top:16px}
+  .rhead{font-weight:800;font-size:15px;margin-bottom:12px}
+  .rhead.ok{color:var(--green)} .rhead.no{color:var(--red)}
+  .rtop{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .rflag{height:40px;border-radius:4px;border:1px solid var(--line)}
+  .rnation{font-size:18px;font-weight:800;line-height:1.1}
+  .rnick{color:var(--gold);font-size:13px;font-weight:600;margin-top:2px}
+  .rtriv{color:#c5d0de;font-size:14px;line-height:1.6;margin:0}
+  .scorebig{text-align:center;font-size:40px;font-weight:800;letter-spacing:-1px;margin:6px 0 0}
+  .scoresub{text-align:center;color:var(--muted);font-size:14px;margin-bottom:18px}
+  .fb-share{background:var(--green)}
+  .shareMsg{text-align:center;color:var(--muted);font-size:12px;margin-top:6px}
+  .lbtitle{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin:22px 0 8px}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.07em}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  tr.me td{background:rgba(244,198,74,.10)}
+  .rk{color:var(--muted);width:34px;text-align:center;font-weight:700}
+  .err{color:var(--red);font-size:13px;margin-top:10px}
+  .qimg{width:100%;height:260px;object-fit:contain;border-radius:12px;border:1px solid var(--line);display:block;margin:0 0 14px;background:#ffffff}
+  .qname{text-align:center;font-size:23px;font-weight:800;letter-spacing:-.3px;color:var(--gold);line-height:1.25}
+</style>
+</head>
+<body>
+<script>
+const CONFIG = {
+  // Same multi-game Apps Script /exec URL as the other BPL games:
+  API_URL: "https://script.google.com/macros/s/AKfycbzmnWu38JGTNKOA7w7PB9_-Kx_-28Q6c6_ED4PiOvVuHpnQPMTgelw9YWroy0X2NQbQ/exec",
+  GAME: "dishes",
+  SECONDS: 14        // TODO: time per question
+};
+</script>
+
+<div class="wrap">
+  <a class="backhub" href="index.html">&lsaquo; All games</a>
+  <header>
+    <div class="kicker">Betting Premier League &middot; World Cup 2026</div>
+    <!-- TODO: title -->
+    <div class="titlerow"><img class="kcmark" src="branding/kc_monogram.png" alt="KC"><h1>National Dishes</h1></div>
+    <!-- TODO: subtitle -->
+    <div class="sub">20 nations &middot; see the dish, pick its nation &middot; one try each</div>
+  </header>
+
+  <div id="start" class="card">
+    <!-- TODO: intro line -->
+    <p class="muted" style="margin-top:0">You'll see a national dish and its name. Tap the nation it belongs to before the clock runs out, then read a quick fact.</p>
+    <input id="name" type="text" placeholder="Your name" maxlength="28" autocomplete="off">
+    <button class="btn" id="startBtn">Start quiz</button>
+    <div class="err hide" id="startErr"></div>
+    <div class="lbtitle">Leaderboard</div>
+    <div id="homeLbStatus" class="muted" style="font-size:13px;text-align:center;margin-bottom:4px">Loading&hellip;</div>
+    <table id="lbTableHome"><thead><tr><th class="rk">#</th><th>Player</th><th class="num">Score</th><th class="num">Time</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <div id="game" class="card hide">
+    <div class="gtop"><span>Question <b id="qnum">1</b> / <span id="qtot">20</span></span><span>Score <b id="score">0</b></span></div>
+    <div class="timerbar"><div class="timerfill" id="timerfill"></div></div>
+    <!-- TODO: question label -->
+    <div class="nicklbl">Whose national dish?</div>
+    <div class="nick" id="nick"></div>
+    <div class="opts" id="opts"></div>
+    <div id="reveal"></div>
+  </div>
+
+  <div id="end" class="card hide">
+    <div class="scorebig" id="finalScore"></div>
+    <div class="scoresub" id="finalSub"></div>
+    <button class="btn fb-share hide" id="shareBtn">Share my score</button>
+    <div class="shareMsg" id="shareMsg"></div>
+    <div class="lbtitle">Leaderboard</div>
+    <table id="lbTable"><thead><tr><th class="rk">#</th><th>Player</th><th class="num">Score</th><th class="num">Time</th></tr></thead><tbody></tbody></table>
+  </div>
+</div>
+
+<script>
+/* =======================================================================
+   THE ONLY PART THAT CHANGES PER QUIZ: the data array.
+   Each item:
+     nation : the answer (must be one of the 48 nation names)
+     cue    : the QUESTION shown in big gold text (e.g. the animal name)
+     cc     : flagcdn country code for the reveal flag
+              (England="gb-eng", Scotland="gb-sct", else ISO-2 lowercase)
+     iso3   : 3-letter code, ONLY used to stop England/Scotland (both "gbr")
+              ever appearing as options in the same question. Use the real
+              ISO3 for everyone else (they're all unique).
+     img    : a real, licence-clean image (Wikimedia Commons). Living
+              animals use nature photos; mythical or emblem-only symbols
+              (unicorn, double-tailed lion, heraldic eagles) use the
+              public-domain coat of arms art.
+     fact   : one or two sentences shown on the reveal.
+   All 48 nations. iso3 doubles as a 'never appear together' group token:
+   nations that share an animal share a token so two are never options in
+   the same question (lion, eagle, rooster, and the Andean condor pair).
+   Each shared animal uses a different image. Facts verified.
+   ======================================================================= */
+const NK = [{"nation": "Algeria", "cue": "Chakhchouka", "cc": "dz", "fact": "Torn flatbread simmered in a spicy lamb and tomato stew; a Berber dish that is emblematically Algerian (couscous is also claimed)."}, {"nation": "Australia", "cue": "Meat pie", "cc": "au", "fact": "A handheld pastry of minced meat and gravy; a footy and pub staple (lamingtons and pavlova also feature)."}, {"nation": "Austria", "cue": "Wiener schnitzel", "cc": "at", "fact": "A thin breaded and fried veal cutlet; Vienna's signature plate."}, {"nation": "Belgium", "cue": "Moules-frites", "cc": "be", "fact": "Mussels steamed in white wine served with fries; the unofficial national plate."}, {"nation": "Brazil", "cue": "Feijoada", "cc": "br", "fact": "A black bean stew with cuts of pork, served over rice; the classic weekend dish."}, {"nation": "Canada", "cue": "Poutine", "cc": "ca", "fact": "Fries topped with cheese curds and gravy; born in 1950s Quebec."}, {"nation": "Croatia", "cue": "Pasticada", "cc": "hr", "fact": "Dalmatian beef marinated and braised in wine and prunes, served with gnocchi (peka is also cited)."}, {"nation": "Curacao", "cue": "Keshi yena", "cc": "cw", "fact": "A scooped-out round of cheese stuffed with spiced meat; a clever colonial-era invention."}, {"nation": "Czechia", "cue": "Svickova", "cc": "cz", "fact": "Beef sirloin in a creamy root-vegetable sauce with bread dumplings (vepro-knedlo-zelo also national)."}, {"nation": "Ecuador", "cue": "Encebollado", "cc": "ec", "fact": "A tuna and cassava soup piled with pickled onions; the coastal hangover cure and national dish."}, {"nation": "Egypt", "cue": "Koshari", "cc": "eg", "fact": "A street bowl of rice, lentils, pasta and chickpeas under spiced tomato sauce."}, {"nation": "England", "cue": "Fish and chips", "cc": "gb-eng", "fact": "Battered fish with thick-cut chips; the seaside institution (Sunday roast also emblematic)."}, {"nation": "Haiti", "cue": "Soup joumou", "cc": "ht", "fact": "A squash soup once forbidden to the enslaved, now the dish of independence day (UNESCO-listed)."}, {"nation": "Ivory Coast", "cue": "Attieke", "cc": "ci", "fact": "Tangy fermented cassava couscous, usually with grilled fish (UNESCO-listed; kedjenou is the national stew)."}, {"nation": "Jordan", "cue": "Mansaf", "cc": "jo", "fact": "Lamb cooked in a sauce of fermented dried yogurt over rice; served at every big occasion."}, {"nation": "Mexico", "cue": "Mole poblano", "cc": "mx", "fact": "A deep sauce of chillies, spices and chocolate over turkey or chicken (tacos, chiles en nogada also)."}, {"nation": "Portugal", "cue": "Bacalhau", "cc": "pt", "fact": "Salt cod, famously said to have 365 preparations, one for each day (pastel de nata too)."}, {"nation": "Scotland", "cue": "Haggis", "cc": "gb-sct", "fact": "Sheep's offal, oats and spice in a casing, served with neeps and tatties."}, {"nation": "Sweden", "cue": "Kottbullar", "cc": "se", "fact": "Small meatballs with gravy and lingonberry (the pungent surstromming is the other emblem)."}, {"nation": "Uruguay", "cue": "Chivito", "cc": "uy", "fact": "A towering steak sandwich stacked with ham, cheese, egg and salad."}];
+
+const WIKI_FIX={"Meat pie": "Meat pie (Australia and New Zealand)", "Pasticada": "Pašticada", "Svickova": "Svíčková", "Kottbullar": "Köttbullar", "Attieke": "Attiéké", "Chivito": "Chivito (sandwich)", "Chakhchouka": "Shakshouka", "Bacalhau": "Bacalhau à Brás"};
+const IMG={};
+function preloadImgs(){Object.keys(IMG).forEach(function(k){if(IMG[k]){var im=new Image();im.src=IMG[k];}});}
+async function loadImages(){
+  try{var c=JSON.parse(localStorage.getItem('bpl_dishes_imgcache')||'{}');if(c&&Object.keys(c).length>=NK.length){Object.assign(IMG,c);preloadImgs();return;}}catch(e){}
+  await Promise.all(NK.map(async function(e){
+    var t=encodeURIComponent((WIKI_FIX[e.cue]||e.cue).replace(/ /g,'_'));
+    try{var r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+t);if(r.ok){var j=await r.json();var u=j.thumbnail&&j.thumbnail.source;if(u)IMG[e.cue]=u.replace(/\/\d+px-/,'/500px-');}}catch(_){}
+  }));
+  try{localStorage.setItem('bpl_dishes_imgcache',JSON.stringify(IMG));}catch(e){}
+  preloadImgs();
+}
+loadImages();
+
+
+/* ---- engine below is identical across all BPL quizzes; do not change ---- */
+const $=id=>document.getElementById(id);
+$('qtot').textContent=NK.length;
+let name='', order=[], idx=0, score=0, startTime=0, timer=null, answered=false;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function esc(s){return String(s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));}
+
+$('startBtn').onclick=async()=>{
+  name=$('name').value.trim();
+  if(name.length<2){ $('startErr').textContent='Please enter your name.'; $('startErr').classList.remove('hide'); return; }
+  $('startBtn').disabled=true; $('startErr').classList.add('hide');
+  let lb=[]; try{ lb=await getLeaderboard(); }catch(e){}
+  if(localStorage.getItem('bpl_'+CONFIG.GAME+'_'+name.toLowerCase()) || lb.some(r=>String(r.name).trim().toLowerCase()===name.toLowerCase())){
+    const mine=lb.find(r=>String(r.name).trim().toLowerCase()===name.toLowerCase());
+    showEnd(mine?mine.score:0,0,lb,true); return;
+  }
+  beginGame();
+};
+function beginGame(){
+  order=shuffle([...Array(NK.length).keys()]); idx=0; score=0; startTime=Date.now();
+  $('start').classList.add('hide'); $('end').classList.add('hide'); $('game').classList.remove('hide');
+  showQuestion();
+}
+function showQuestion(){
+  answered=false; const q=NK[order[idx]];
+  $('qnum').textContent=idx+1; $('score').textContent=score;
+  $('nick').innerHTML='<img class="qimg" src="'+(IMG[q.cue]||'')+'" alt="'+esc(q.cue)+'" loading="eager" onerror="this.style.display=&#39;none&#39;"><div class="qname">'+esc(q.cue)+'</div>';
+  $('reveal').innerHTML='';
+  const others=shuffle(NK.filter(x=>x.nation!==q.nation)).slice(0,3).map(x=>x.nation);
+  const opts=shuffle([q.nation,...others]);
+  const box=$('opts'); box.innerHTML='';
+  opts.forEach(nat=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=nat;
+    b.dataset.nat=nat; b.onclick=()=>judge(false,nat); box.appendChild(b); });
+  let fill=$('timerfill'); fill.classList.remove('warn'); fill.style.width='100%';
+  clearInterval(timer);
+  let go=false;
+  const startTimer=()=>{ if(go)return; go=true; const started=Date.now();
+    timer=setInterval(()=>{ const left=Math.max(0,CONFIG.SECONDS-(Date.now()-started)/1000);
+      fill.style.width=(left/CONFIG.SECONDS*100)+'%'; if(left<=3)fill.classList.add('warn');
+      if(left<=0){ clearInterval(timer); judge(true,null); } },80); };
+  const im=$('nick').querySelector('img.qimg');
+  if(im && IMG[q.cue]){
+    if(im.complete && im.naturalWidth>0) startTimer();          // already cached → start now
+    else { im.addEventListener('load',startTimer); im.addEventListener('error',startTimer); setTimeout(startTimer,2500); }
+  } else startTimer();                                          // no image → start immediately
+}
+function judge(timeout,chosen){
+  if(answered)return; answered=true; clearInterval(timer);
+  const q=NK[order[idx]]; const ok=!timeout && chosen===q.nation;
+  if(ok)score++; $('score').textContent=score;
+  [...document.querySelectorAll('.opt')].forEach(b=>{ b.disabled=true;
+    if(b.dataset.nat===q.nation)b.classList.add('correct');
+    else if(b.dataset.nat===chosen)b.classList.add('wrong'); });
+  const head = ok?'<div class="rhead ok">&#10003; Correct!</div>'
+            : timeout?'<div class="rhead no">&#10007; Time\u2019s up</div>'
+            : '<div class="rhead no">&#10007; Not quite</div>';
+  $('reveal').innerHTML = head +
+    '<div class="rtop"><img class="rflag" src="https://flagcdn.com/h40/'+q.cc+'.png" alt="" onerror="this.style.display=\'none\'">'+
+    '<div><div class="rnation">'+esc(q.nation)+'</div><div class="rnick">'+esc(q.cue)+'</div></div></div>'+
+    '<p class="rtriv">'+esc(q.fact)+'</p>'+
+    '<button class="btn" id="nextBtn">'+(idx<NK.length-1?'Next &rsaquo;':'See results &rsaquo;')+'</button>';
+  $('nextBtn').onclick=()=>{ idx++; if(idx<NK.length) showQuestion(); else finish(); };
+}
+async function finish(){
+  $('game').classList.add('hide');
+  const timeMs=Date.now()-startTime;
+  localStorage.setItem('bpl_'+CONFIG.GAME+'_'+name.toLowerCase(),'1');
+  let lb=[]; try{ lb=await submitScore(name,score,NK.length,timeMs); }catch(e){}
+  if(!lb.some(r=>String(r.name).trim().toLowerCase()===name.toLowerCase())) lb.push({name,score,total:NK.length,timeMs});
+  lb.sort((a,b)=>b.score-a.score || a.timeMs-b.timeMs);
+  showEnd(score,timeMs,lb,false);
+}
+function showEnd(sc,timeMs,lb,already){
+  $('start').classList.add('hide'); $('game').classList.add('hide'); $('end').classList.remove('hide');
+  $('shareMsg').textContent='';
+  if(already){ $('finalScore').textContent=(sc!=null?sc+' / '+NK.length:'Already played');
+    $('finalSub').textContent="You've already played, one try each!"; $('shareBtn').classList.add('hide'); }
+  else { $('finalScore').textContent=sc+' / '+NK.length;
+    $('finalSub').textContent='Finished in '+Math.round(timeMs/1000)+'s. Nice one, '+name+'!';
+    const sb=$('shareBtn'); sb.classList.remove('hide'); sb.onclick=()=>shareScore(sc!=null?sc:0); }
+  renderLb(lb||[]);
+}
+function shareScore(sc){
+  const url=location.origin+location.pathname;
+  /* TODO: edit the quiz name + emoji in this line */
+  const text='I got '+sc+'/'+NK.length+' on the BPL National Dishes quiz \ud83c\udf7d\ufe0f Can you beat me?';
+  if(navigator.share){ navigator.share({title:document.title,text,url}).catch(()=>{}); return; }
+  const full=text+' '+url;
+  try{ navigator.clipboard.writeText(full); $('shareMsg').textContent='Link copied, opening WhatsApp…'; }catch(e){}
+  window.open('https://wa.me/?text='+encodeURIComponent(full),'_blank');
+}
+function fmtTime(ms){ if(!ms)return '-'; const s=Math.round(ms/1000); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function renderLb(lb){
+  const body=$('lbTable').querySelector('tbody');
+  if(!lb.length){ body.innerHTML='<tr><td colspan="4" class="muted" style="text-align:center;padding:18px">No scores yet, be the first!</td></tr>'; return; }
+  body.innerHTML=lb.slice(0,50).map((r,i)=>`<tr class="${name&&String(r.name).trim().toLowerCase()===name.toLowerCase()?'me':''}"><td class="rk">${i+1}</td><td>${esc(r.name)}</td><td class="num">${r.score}</td><td class="num" style="color:var(--muted);font-weight:500">${fmtTime(r.timeMs)}</td></tr>`).join('');
+}
+async function loadHomeLb(){
+  const status=$('homeLbStatus'), body=$('lbTableHome').querySelector('tbody');
+  try{ const lb=await getLeaderboard();
+    if(!lb.length){ status.textContent='No scores yet, be the first!'; body.innerHTML=''; return; }
+    status.textContent='';
+    body.innerHTML=lb.slice(0,50).map((r,i)=>`<tr><td class="rk">${i+1}</td><td>${esc(r.name)}</td><td class="num">${r.score}</td><td class="num" style="color:var(--muted);font-weight:500">${fmtTime(r.timeMs)}</td></tr>`).join('');
+  }catch(e){ status.textContent='Could not load the leaderboard right now.'; }
+}
+async function getLeaderboard(){
+  if(!CONFIG.API_URL) return [];
+  const r=await fetch(CONFIG.API_URL+'?game='+encodeURIComponent(CONFIG.GAME)); const j=await r.json(); return j.leaderboard||[];
+}
+async function submitScore(name,score,total,timeMs){
+  if(!CONFIG.API_URL) return [];
+  const r=await fetch(CONFIG.API_URL,{method:'POST',body:JSON.stringify({game:CONFIG.GAME,name,score,total,timeMs})});
+  const j=await r.json(); return j.leaderboard||[];
+}
+loadHomeLb();
+</script>
+</body>
+</html>
