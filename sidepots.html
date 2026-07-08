@@ -238,7 +238,7 @@ function renderPot(k,on){
   // bars
   const bars=picked.map(c=>{
     const won=win===c, lead=c===leadC;
-    const tag = won?'<span class="wontag">Won</span>' : (lead?'<span class="leadtag">Leading</span>':'');
+    const tag = won?'<span class="wontag">Won</span>' : (lead?'<span class="leadtag">Most voted</span>':'');
     return '<div class="row'+(won?" won":(lead?" lead":""))+'"><div class="rtop"><span class="rname">'+esc(c)+
       tag+'</span><span class="rcount">'+cnt[c]+
       ' &middot; '+Math.round(cnt[c]/n*100)+'%</span></div>'+
@@ -249,7 +249,7 @@ function renderPot(k,on){
     const names=p.voters.filter(v=>v.pick===c).map(v=>v.name).sort((a,b)=>a.toLowerCase()<b.toLowerCase()?-1:1);
     const won=win===c, lead=c===leadC;
     const cls = won?' class="won" open' : (lead?' class="lead" open':'');
-    const mark = won?' ✓' : (lead?' &middot; leading':'');
+    const mark = won?' ✓' : (lead?' &middot; most voted':'');
     return '<details'+cls+'><summary><span>'+esc(c)+
       mark+'</span><span class="cnt">'+names.length+'</span></summary>'+
       '<div class="names">'+names.map(x=>'<span>'+esc(x)+'</span>').join("")+'</div></details>';
