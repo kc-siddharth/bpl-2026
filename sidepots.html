@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPL 2026 &middot; Sidepots</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="BPL Sidepots &middot; World Cup 2026">
+<meta property="og:description" content="Golden Boot, Golden Ball, Golden Glove &amp; the Champion. Every prediction, every pot &mdash; revealed after the final.">
+<meta property="og:image" content="https://kc-siddharth.github.io/bpl-2026/branding/kc_share_sidepots.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<link rel="icon" type="image/png" href="https://kc-siddharth.github.io/bpl-2026/branding/kc_favicon.png">
+<link rel="apple-touch-icon" href="https://kc-siddharth.github.io/bpl-2026/branding/apple-touch-icon.png">
+<style>
+  :root{--bg:#0b1018;--panel:#141c27;--panel2:#1b2532;--line:#222c3b;--txt:#eaf0f7;
+    --muted:#8194ac;--gold:#f4c64a;--green:#3ddc97;--red:#ff6b6b;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);line-height:1.5;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:820px;margin:0 auto;padding:42px 20px 70px}
+  a{color:inherit}
+  header{text-align:center;margin-bottom:26px}
+  .kicker{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:12px;font-weight:700}
+  .titlerow{display:flex;align-items:center;justify-content:center;gap:12px;margin:10px 0 4px}
+  .kcmark{width:46px;height:46px;flex:none;display:block}
+  h1{font-size:30px;margin:0;font-weight:800;letter-spacing:-.5px;text-transform:uppercase}
+  .sub{color:var(--muted);font-size:14px;margin-top:6px}
+  .back{display:inline-block;margin-top:14px;color:var(--muted);font-size:13px;text-decoration:none}
+  .back:hover{color:var(--gold)}
+
+  /* locked */
+  #locked{text-align:center;padding:26px 6px 10px}
+  .lockbadge{font-size:44px;margin-bottom:6px}
+  .lockttl{font-size:19px;font-weight:800;margin:4px 0 2px}
+  .lockmsg{color:var(--muted);font-size:14.5px;max-width:440px;margin:0 auto 22px}
+  .cd{display:flex;justify-content:center;gap:10px;margin:8px 0 26px;flex-wrap:wrap}
+  .cdbox{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:14px;padding:14px 6px;min-width:74px}
+  .cdnum{font-size:30px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1}
+  .cdlbl{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+  .teasers{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:520px;margin:6px auto 0}
+  .teaser{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:14px;padding:16px 14px;text-align:left}
+  .teaser .ti{font-size:26px}
+  .teaser h3{margin:8px 0 2px;font-size:16px;font-weight:800}
+  .teaser p{margin:0;color:var(--muted);font-size:12.5px}
+  .teaser .pot{color:var(--gold);font-weight:700;font-size:12.5px;margin-top:6px}
+
+  /* tabs */
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:6px 0 22px}
+  .tab{background:var(--panel);border:1px solid var(--line);border-radius:999px;color:var(--muted);
+    padding:9px 15px;font-size:13.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:7px}
+  .tab:hover{border-color:rgba(244,198,74,.5);color:var(--txt)}
+  .tab.on{background:linear-gradient(165deg,#1c2433,#181f2c);border-color:var(--gold);color:var(--gold)}
+  .tab .ti{font-size:16px}
+
+  .pot{background:linear-gradient(165deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:18px;padding:22px;display:none}
+  .pot.on{display:block}
+  .potHead{display:flex;align-items:flex-start;gap:14px;margin-bottom:6px}
+  .potHead .pi{font-size:36px;line-height:1}
+  .potHead h2{margin:0;font-size:22px;font-weight:800}
+  .potHead .ps{color:var(--muted);font-size:13.5px;margin-top:2px}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 4px}
+  .chip{background:#0f1621;border:1px solid var(--line);border-radius:12px;padding:9px 13px;flex:1;min-width:120px}
+  .chip .k{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .chip .v{font-size:18px;font-weight:800;margin-top:3px}
+  .chip .v.gold{color:var(--gold)}
+
+  .banner{margin:16px 0 4px;border-radius:14px;padding:14px 16px;border:1px solid var(--line);
+    background:#0f1621;font-size:14px}
+  .banner.win{border-color:var(--gold);background:linear-gradient(165deg,#1e2432,#191d29)}
+  .banner .bt{font-weight:800;color:var(--gold);font-size:15px}
+  .banner .bd{color:var(--muted);margin-top:3px}
+  .banner.pending .bt{color:var(--muted)}
+
+  .barwrap{margin-top:20px}
+  .row{margin:0 0 13px}
+  .rtop{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;margin-bottom:5px}
+  .rname{font-weight:700}
+  .rcount{color:var(--muted);font-variant-numeric:tabular-nums}
+  .track{height:12px;background:#0f1621;border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+  .fill{height:100%;background:linear-gradient(90deg,#43506a,#61748f);border-radius:7px;transition:width .5s}
+  .row.won .rname{color:var(--gold)}
+  .row.won .fill{background:linear-gradient(90deg,#c9a23a,var(--gold))}
+  .wontag{font-size:10.5px;font-weight:800;color:#0b1018;background:var(--gold);border-radius:6px;
+    padding:2px 7px;margin-left:8px;text-transform:uppercase;letter-spacing:.05em}
+
+  .who{margin-top:20px;border-top:1px solid var(--line);padding-top:8px}
+  details{border-bottom:1px solid var(--line)}
+  summary{cursor:pointer;list-style:none;padding:12px 2px;display:flex;justify-content:space-between;
+    align-items:center;font-size:14px;font-weight:700}
+  summary::-webkit-details-marker{display:none}
+  summary .cnt{color:var(--muted);font-weight:600;font-size:13px}
+  details.won summary{color:var(--gold)}
+  .names{padding:0 2px 14px;color:var(--muted);font-size:13.5px;line-height:1.9}
+  .names span{display:inline-block;background:#0f1621;border:1px solid var(--line);border-radius:8px;
+    padding:3px 10px;margin:0 6px 6px 0;color:var(--txt)}
+  details.won .names span{border-color:rgba(244,198,74,.4)}
+
+  footer{text-align:center;color:var(--muted);font-size:13px;margin-top:36px}
+  footer .fun{color:var(--gold);font-style:italic;font-size:16px}
+  .previewnote{text-align:center;font-size:12px;color:var(--gold);opacity:.85;margin-bottom:14px}
+  @media(max-width:560px){.wrap{padding:32px 14px 60px}.teasers{grid-template-columns:1fr}h1{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">World Cup 2026</div>
+    <div class="titlerow">
+      <img class="kcmark" src="branding/kc_monogram.png" alt="KC">
+      <h1>Sidepots</h1>
+    </div>
+    <div class="sub">Golden Boot &middot; Golden Ball &middot; Golden Glove &middot; the Champion</div>
+  </header>
+
+  <div id="locked">
+    <div class="lockbadge">&#128274;</div>
+    <div class="lockttl">Locked until the final is done</div>
+    <div class="lockmsg" id="lockmsg">Every sidepot prediction is sealed. The picks, the pots and the winners are revealed the day after the final.</div>
+    <div class="cd" id="cd"></div>
+    <div class="teasers" id="teasers"></div>
+    <a class="back" href="index.html">&#8592; Back to games</a>
+  </div>
+
+  <div id="reveal" style="display:none">
+    <div class="previewnote" id="pvnote" style="display:none">Preview mode &middot; not yet public</div>
+    <div class="tabs" id="tabs"></div>
+    <div id="pots"></div>
+    <div style="text-align:center"><a class="back" href="index.html">&#8592; Back to games</a></div>
+  </div>
+
+  <footer><span class="fun">for the fun of it</span></footer>
+</div>
+
+<script>
+/* ============ CONFIG ============ */
+// Page auto-unlocks at this moment (local time). Day after the WC 2026 final.
+const REVEAL_AT = new Date("2026-07-20T12:00:00");
+// To PREVIEW before then, open the page with ?reveal=1 in the URL.
+
+// Buy-in per sidepot (in rupees). null = not yet set (pot shows "TBD").
+const BUYIN = { boot:100, ball:100, glove:50, winner:100 };
+
+// WINNERS — set each once the result is official, e.g. WINNER.boot = "Lionel Messi".
+// Must match a candidate name exactly (see DATA below). null = awaiting result.
+const WINNER = { boot:null, ball:null, glove:null, winner:null };
+
+const DATA = {"boot": {"name": "Golden Boot", "sub": "Top scorer", "icon": "⚽", "buyIn": 100, "candidates": ["Lionel Messi", "Kylian Mbappe", "Erling Haaland", "Harry Kane", "Lamine Yamal", "Vinicius Junior", "Kai Havertz", "Deniz Undav", "Cristiano Ronaldo", "Brian Brobbey", "Folarin Balogun", "Other"], "counts": {"Lionel Messi": 18, "Kylian Mbappe": 17, "Erling Haaland": 2, "Harry Kane": 2, "Lamine Yamal": 0, "Vinicius Junior": 0, "Kai Havertz": 0, "Deniz Undav": 0, "Cristiano Ronaldo": 0, "Brian Brobbey": 0, "Folarin Balogun": 0, "Other": 0}, "voters": [{"name": "Abhinav Benjamin", "pick": "Kylian Mbappe"}, {"name": "Abhinav Bhardwaj", "pick": "Kylian Mbappe"}, {"name": "Abhishek OV", "pick": "Lionel Messi"}, {"name": "Aditya Dot", "pick": "Harry Kane"}, {"name": "Aiswarya Vipin", "pick": "Lionel Messi"}, {"name": "Akash Rau", "pick": "Kylian Mbappe"}, {"name": "Akshay Bhambure", "pick": "Kylian Mbappe"}, {"name": "Amalta Gupta", "pick": "Lionel Messi"}, {"name": "Asher Thomas", "pick": "Lionel Messi"}, {"name": "Baniya", "pick": "Lionel Messi"}, {"name": "Cameron", "pick": "Kylian Mbappe"}, {"name": "Dr. Suraj Bhan Singh", "pick": "Lionel Messi"}, {"name": "Gayatri Chechi", "pick": "Lionel Messi"}, {"name": "Hamza Farooqui New", "pick": "Lionel Messi"}, {"name": "Himanshu New", "pick": "Kylian Mbappe"}, {"name": "Jasper", "pick": "Lionel Messi"}, {"name": "Jayadev Alangad", "pick": "Kylian Mbappe"}, {"name": "John Abhijeet", "pick": "Lionel Messi"}, {"name": "Josh Parker Allen", "pick": "Lionel Messi"}, {"name": "Kannav Aurora", "pick": "Kylian Mbappe"}, {"name": "Karan Germany", "pick": "Kylian Mbappe"}, {"name": "Kartish", "pick": "Kylian Mbappe"}, {"name": "Kc Swetha Chechi", "pick": "Lionel Messi"}, {"name": "Khemka", "pick": "Kylian Mbappe"}, {"name": "Mohan", "pick": "Harry Kane"}, {"name": "Nachiket", "pick": "Kylian Mbappe"}, {"name": "Praneet Shekhar", "pick": "Lionel Messi"}, {"name": "Raashi", "pick": "Kylian Mbappe"}, {"name": "Raghav Mittal", "pick": "Erling Haaland"}, {"name": "Sahil Bhargava", "pick": "Kylian Mbappe"}, {"name": "Sheel Dwivedi", "pick": "Kylian Mbappe"}, {"name": "Shourya Shukla", "pick": "Lionel Messi"}, {"name": "Siddharth Mishra", "pick": "Kylian Mbappe"}, {"name": "Sneha Chechi", "pick": "Lionel Messi"}, {"name": "Soma Karthik", "pick": "Erling Haaland"}, {"name": "Vaibhav Chaddha", "pick": "Kylian Mbappe"}, {"name": "Vipin", "pick": "Lionel Messi"}, {"name": "Vivek Nair Mohan Friend", "pick": "Lionel Messi"}, {"name": "Yashovardhan Bhagat", "pick": "Lionel Messi"}], "winner": null}, "ball": {"name": "Golden Ball", "sub": "Best player", "icon": "🏆", "buyIn": 100, "candidates": ["Lionel Messi", "Kylian Mbappe", "Erling Haaland", "Harry Kane", "Lamine Yamal", "Vinicius Junior", "Michael Olise", "Jude Bellingham", "Pedri", "Declan Rice", "Joao Neves", "Ronaldo"], "counts": {"Lionel Messi": 12, "Kylian Mbappe": 15, "Erling Haaland": 0, "Harry Kane": 2, "Lamine Yamal": 3, "Vinicius Junior": 1, "Michael Olise": 0, "Jude Bellingham": 0, "Pedri": 0, "Declan Rice": 1, "Joao Neves": 0, "Ronaldo": 1}, "voters": [{"name": "Abhinav Benjamin", "pick": "Kylian Mbappe"}, {"name": "Abhinav Bhardwaj", "pick": "Lionel Messi"}, {"name": "Abhishek OV", "pick": "Lionel Messi"}, {"name": "Aditya Dot", "pick": "Harry Kane"}, {"name": "Aiswarya Vipin", "pick": "Lionel Messi"}, {"name": "Akash Rau", "pick": "Kylian Mbappe"}, {"name": "Akshay Bhambure", "pick": "Kylian Mbappe"}, {"name": "Amalta Gupta", "pick": "Kylian Mbappe"}, {"name": "Asher Thomas", "pick": "Lionel Messi"}, {"name": "Baniya", "pick": "Kylian Mbappe"}, {"name": "Cameron", "pick": "Harry Kane"}, {"name": "Dr. Suraj Bhan Singh", "pick": "Lionel Messi"}, {"name": "Gayatri Chechi", "pick": "Kylian Mbappe"}, {"name": "Jasper", "pick": "Kylian Mbappe"}, {"name": "Jayadev Alangad", "pick": "Kylian Mbappe"}, {"name": "John Abhijeet", "pick": "Lionel Messi"}, {"name": "Josh Parker Allen", "pick": "Lionel Messi"}, {"name": "Kannav Aurora", "pick": "Kylian Mbappe"}, {"name": "Karan Germany", "pick": "Kylian Mbappe"}, {"name": "Kartish", "pick": "Lamine Yamal"}, {"name": "Kc Swetha Chechi", "pick": "Kylian Mbappe"}, {"name": "Khemka", "pick": "Lamine Yamal"}, {"name": "Mohan", "pick": "Kylian Mbappe"}, {"name": "Praneet Shekhar", "pick": "Lionel Messi"}, {"name": "Raashi", "pick": "Kylian Mbappe"}, {"name": "Raghav Mittal", "pick": "Ronaldo"}, {"name": "Sahil Bhargava", "pick": "Kylian Mbappe"}, {"name": "Shivam Mishra", "pick": "Vinicius Junior"}, {"name": "Shourya Shukla", "pick": "Kylian Mbappe"}, {"name": "Siddharth Mishra", "pick": "Lamine Yamal"}, {"name": "Sneha Chechi", "pick": "Lionel Messi"}, {"name": "Vaibhav Chaddha", "pick": "Lionel Messi"}, {"name": "Vipin", "pick": "Declan Rice"}, {"name": "Vivek Nair Mohan Friend", "pick": "Lionel Messi"}, {"name": "Yashovardhan Bhagat", "pick": "Lionel Messi"}], "winner": null}, "glove": {"name": "Golden Glove", "sub": "Best goalkeeper", "icon": "🧤", "buyIn": 50, "candidates": ["Emiliano Martinez", "Alisson Becker", "Unai Simon", "Manuel Neuer", "Jordan Pickford", "Mike Maignan", "Bart Verbruggen", "Matt Freese", "Dominik Livakovic", "Thibaut Courtois", "Vozinha"], "counts": {"Emiliano Martinez": 11, "Alisson Becker": 1, "Unai Simon": 2, "Manuel Neuer": 0, "Jordan Pickford": 2, "Mike Maignan": 12, "Bart Verbruggen": 0, "Matt Freese": 0, "Dominik Livakovic": 0, "Thibaut Courtois": 0, "Vozinha": 1}, "voters": [{"name": "Abhinav Benjamin", "pick": "Emiliano Martinez"}, {"name": "Abhinav Bhardwaj", "pick": "Emiliano Martinez"}, {"name": "Abhishek OV", "pick": "Mike Maignan"}, {"name": "Aiswarya Vipin", "pick": "Mike Maignan"}, {"name": "Akash Rau", "pick": "Mike Maignan"}, {"name": "Akshay Bhambure", "pick": "Mike Maignan"}, {"name": "Amalta Gupta", "pick": "Emiliano Martinez"}, {"name": "Asher Thomas", "pick": "Emiliano Martinez"}, {"name": "Baniya", "pick": "Mike Maignan"}, {"name": "Cameron", "pick": "Mike Maignan"}, {"name": "Dr. Suraj Bhan Singh", "pick": "Mike Maignan"}, {"name": "Jasper", "pick": "Mike Maignan"}, {"name": "John Abhijeet", "pick": "Jordan Pickford"}, {"name": "Josh Parker Allen", "pick": "Alisson Becker"}, {"name": "Kannav Aurora", "pick": "Mike Maignan"}, {"name": "Kartish", "pick": "Unai Simon"}, {"name": "Kc Swetha Chechi", "pick": "Emiliano Martinez"}, {"name": "Khemka", "pick": "Emiliano Martinez"}, {"name": "Mohan", "pick": "Emiliano Martinez"}, {"name": "Praneet Shekhar", "pick": "Emiliano Martinez"}, {"name": "Raashi", "pick": "Vozinha"}, {"name": "Raghav Mittal", "pick": "Unai Simon"}, {"name": "Shivam Mishra", "pick": "Mike Maignan"}, {"name": "Shourya Shukla", "pick": "Emiliano Martinez"}, {"name": "Siddharth Mishra", "pick": "Mike Maignan"}, {"name": "Sneha Chechi", "pick": "Emiliano Martinez"}, {"name": "Vaibhav Chaddha", "pick": "Jordan Pickford"}, {"name": "Vipin", "pick": "Mike Maignan"}, {"name": "Yashovardhan Bhagat", "pick": "Emiliano Martinez"}], "winner": null}, "winner": {"name": "World Cup Winner", "sub": "Tournament champion", "icon": "🌍", "buyIn": null, "candidates": ["France", "Argentina", "Brazil", "England", "Spain", "Portugal", "Colombia", "Belgium", "USA", "Mexico", "Morocco", "Other"], "counts": {"France": 23, "Argentina": 14, "Brazil": 2, "England": 6, "Spain": 4, "Portugal": 4, "Colombia": 0, "Belgium": 1, "USA": 0, "Mexico": 0, "Morocco": 2, "Other": 1}, "voters": [{"name": "Abhinav Benjamin", "pick": "France"}, {"name": "Abhinav Bhardwaj", "pick": "Argentina"}, {"name": "Achhen", "pick": "France"}, {"name": "Aditya Dot", "pick": "Other"}, {"name": "Aditya Kavia", "pick": "Portugal"}, {"name": "Aiswarya Vipin", "pick": "France"}, {"name": "Akash Megh", "pick": "France"}, {"name": "Akash Rau", "pick": "France"}, {"name": "Akshay Bhambure", "pick": "France"}, {"name": "Amalta Gupta", "pick": "England"}, {"name": "Anant Mohan Brother In Law", "pick": "France"}, {"name": "Anoop Mannil", "pick": "Argentina"}, {"name": "Arnav -1 BHU", "pick": "France"}, {"name": "Asha Mema", "pick": "England"}, {"name": "Atul Vasudeva", "pick": "Portugal"}, {"name": "Baniya", "pick": "Argentina"}, {"name": "Cameron", "pick": "France"}, {"name": "Deeksha Khemka Friend", "pick": "Morocco"}, {"name": "Dr. Suraj Bhan Singh", "pick": "Argentina"}, {"name": "Ferzina Mohan Friend", "pick": "Argentina"}, {"name": "Gautam sharma", "pick": "Argentina"}, {"name": "Gayatri Chechi", "pick": "France"}, {"name": "Hritwik", "pick": "Argentina"}, {"name": "Jacob George", "pick": "Portugal"}, {"name": "Jasper", "pick": "England"}, {"name": "Jayadev Alangad", "pick": "France"}, {"name": "Josh Parker Allen", "pick": "France"}, {"name": "Jóan Velja", "pick": "Spain"}, {"name": "Kannav Aurora", "pick": "Argentina"}, {"name": "Kartish", "pick": "Spain"}, {"name": "Kc Swetha Chechi", "pick": "Argentina"}, {"name": "Khemka", "pick": "England"}, {"name": "Leonard", "pick": "Brazil"}, {"name": "Matt Kenya", "pick": "Argentina"}, {"name": "Mohan", "pick": "France"}, {"name": "Onam Singh Sair", "pick": "France"}, {"name": "Philipp", "pick": "Spain"}, {"name": "Praneet Shekhar", "pick": "Argentina"}, {"name": "Raashi", "pick": "Argentina"}, {"name": "Raghav Anand", "pick": "France"}, {"name": "Raghav Mittal", "pick": "Brazil"}, {"name": "Raphael Antony", "pick": "France"}, {"name": "Rishi Juthani", "pick": "Portugal"}, {"name": "Sahil Bhargava", "pick": "Morocco"}, {"name": "Shobhit", "pick": "France"}, {"name": "Shobit Mahato", "pick": "Argentina"}, {"name": "Shruti", "pick": "France"}, {"name": "Siddharth Mishra", "pick": "France"}, {"name": "Smriti", "pick": "France"}, {"name": "Sneha Chechi", "pick": "France"}, {"name": "Soma Karthik", "pick": "Belgium"}, {"name": "Sreeradh Ashoka", "pick": "England"}, {"name": "Sumanto", "pick": "France"}, {"name": "Vaibhav Chaddha", "pick": "England"}, {"name": "Vidur Datt", "pick": "Spain"}, {"name": "Vipin", "pick": "Argentina"}, {"name": "Vivek Nair Mohan Friend", "pick": "France"}], "winner": null}};
+/* ================================ */
+
+const $=id=>document.getElementById(id);
+const INR=n=>"₹"+Number(n).toLocaleString("en-IN");
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const q=new URLSearchParams(location.search);
+const forced=q.get("reveal")==="1";
+
+function unlocked(){ return forced || (new Date() >= REVEAL_AT); }
+
+/* ---- locked countdown ---- */
+function totalPreds(){ return Object.values(DATA).reduce((a,p)=>a+p.voters.length,0); }
+function tick(){
+  const diff=REVEAL_AT-new Date();
+  if(diff<=0){ location.reload(); return; }
+  const d=Math.floor(diff/864e5), h=Math.floor(diff%864e5/36e5),
+        m=Math.floor(diff%36e5/6e4), s=Math.floor(diff%6e4/1e3);
+  const parts=[["Days",d],["Hours",h],["Mins",m],["Secs",s]];
+  $("cd").innerHTML=parts.map(([l,v])=>
+    '<div class="cdbox"><div class="cdnum">'+String(v).padStart(2,"0")+'</div><div class="cdlbl">'+l+'</div></div>').join("");
+}
+function buildLocked(){
+  $("lockmsg").innerHTML=totalPreds()+" predictions across 4 sidepots are sealed. Picks, pots and winners reveal the day after the final &mdash; "+
+    REVEAL_AT.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"})+".";
+  $("teasers").innerHTML=Object.entries(DATA).map(([k,p])=>{
+    const bi=BUYIN[k]; const pot=bi!=null?INR(bi*p.voters.length):"pot TBD";
+    return '<div class="teaser"><div class="ti">'+p.icon+'</div><h3>'+esc(p.name)+
+      '</h3><p>'+esc(p.sub)+' &middot; '+p.voters.length+' in</p><div class="pot">'+pot+' pot</div></div>';
+  }).join("");
+  tick(); setInterval(tick,1000);
+}
+
+/* ---- reveal ---- */
+function buildReveal(){
+  if(forced && new Date()<REVEAL_AT) $("pvnote").style.display="block";
+  const keys=Object.keys(DATA);
+  $("tabs").innerHTML=keys.map((k,i)=>
+    '<div class="tab'+(i===0?" on":"")+'" data-k="'+k+'"><span class="ti">'+DATA[k].icon+'</span>'+esc(DATA[k].name)+'</div>').join("");
+  $("pots").innerHTML=keys.map((k,i)=>renderPot(k,i===0)).join("");
+  document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
+    document.querySelectorAll(".pot").forEach(x=>x.classList.remove("on"));
+    t.classList.add("on"); $("pot-"+t.dataset.k).classList.add("on");
+  });
+}
+function renderPot(k,on){
+  const p=DATA[k], n=p.voters.length, bi=BUYIN[k], win=WINNER[k];
+  const pot=bi!=null?bi*n:null;
+  // counts
+  const cnt={}; p.candidates.forEach(c=>cnt[c]=0);
+  p.voters.forEach(v=>cnt[v.pick]=(cnt[v.pick]||0)+1);
+  const picked=p.candidates.filter(c=>cnt[c]>0).sort((a,b)=>cnt[b]-cnt[a]);
+  const max=Math.max(...picked.map(c=>cnt[c]),1);
+  // banner
+  let banner;
+  if(win){
+    const splitters=p.voters.filter(v=>v.pick===win).map(v=>v.name);
+    if(splitters.length && pot!=null){
+      const each=Math.floor(pot/splitters.length);
+      banner='<div class="banner win"><div class="bt">'+p.icon+' Winner: '+esc(win)+
+        '</div><div class="bd">'+splitters.length+' player'+(splitters.length>1?"s":"")+
+        ' split the '+INR(pot)+' pot &middot; '+INR(each)+' each</div></div>';
+    } else if(splitters.length){
+      banner='<div class="banner win"><div class="bt">'+p.icon+' Winner: '+esc(win)+
+        '</div><div class="bd">'+splitters.length+' correct pick'+(splitters.length>1?"s":"")+'</div></div>';
+    } else {
+      banner='<div class="banner win"><div class="bt">'+p.icon+' Winner: '+esc(win)+
+        '</div><div class="bd">No one picked it &mdash; pot carries over</div></div>';
+    }
+  } else {
+    banner='<div class="banner pending"><div class="bt">&#8987; Awaiting result</div>'+
+      '<div class="bd">Winner decided after the final. '+n+' predictions in.</div></div>';
+  }
+  // bars
+  const bars=picked.map(c=>{
+    const won=win===c;
+    return '<div class="row'+(won?" won":"")+'"><div class="rtop"><span class="rname">'+esc(c)+
+      (won?'<span class="wontag">Won</span>':'')+'</span><span class="rcount">'+cnt[c]+
+      ' &middot; '+Math.round(cnt[c]/n*100)+'%</span></div>'+
+      '<div class="track"><div class="fill" style="width:'+(cnt[c]/max*100)+'%"></div></div></div>';
+  }).join("");
+  // who picked whom (grouped)
+  const groups=picked.map(c=>{
+    const names=p.voters.filter(v=>v.pick===c).map(v=>v.name).sort((a,b)=>a.toLowerCase()<b.toLowerCase()?-1:1);
+    const won=win===c;
+    return '<details'+(won?' class="won" open':'')+'><summary><span>'+esc(c)+
+      (won?' ✓':'')+'</span><span class="cnt">'+names.length+'</span></summary>'+
+      '<div class="names">'+names.map(x=>'<span>'+esc(x)+'</span>').join("")+'</div></details>';
+  }).join("");
+  const potChip=pot!=null?INR(pot):"TBD";
+  const biChip=bi!=null?INR(bi):"TBD";
+  return '<div class="pot'+(on?" on":"")+'" id="pot-'+k+'">'+
+    '<div class="potHead"><div class="pi">'+p.icon+'</div><div><h2>'+esc(p.name)+
+      '</h2><div class="ps">'+esc(p.sub)+'</div></div></div>'+
+    '<div class="meta">'+
+      '<div class="chip"><div class="k">Pot</div><div class="v gold">'+potChip+'</div></div>'+
+      '<div class="chip"><div class="k">Buy-in</div><div class="v">'+biChip+'</div></div>'+
+      '<div class="chip"><div class="k">Players in</div><div class="v">'+n+'</div></div>'+
+    '</div>'+banner+
+    '<div class="barwrap">'+bars+'</div>'+
+    '<div class="who">'+groups+'</div></div>';
+}
+
+if(unlocked()){ $("locked").style.display="none"; $("reveal").style.display="block"; buildReveal(); }
+else { buildLocked(); }
+</script>
+</body>
+</html>
+                        
