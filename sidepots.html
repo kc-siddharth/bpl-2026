@@ -85,8 +85,14 @@
   .fill{height:100%;background:linear-gradient(90deg,#43506a,#61748f);border-radius:7px;transition:width .5s}
   .row.won .rname{color:var(--gold)}
   .row.won .fill{background:linear-gradient(90deg,#c9a23a,var(--gold))}
+  .row.lead .rname{color:var(--green)}
+  .row.lead .fill{background:linear-gradient(90deg,#2a9e73,var(--green))}
   .wontag{font-size:10.5px;font-weight:800;color:#0b1018;background:var(--gold);border-radius:6px;
     padding:2px 7px;margin-left:8px;text-transform:uppercase;letter-spacing:.05em}
+  .leadtag{font-size:10.5px;font-weight:800;color:#0b1018;background:var(--green);border-radius:6px;
+    padding:2px 7px;margin-left:8px;text-transform:uppercase;letter-spacing:.05em}
+  details.lead summary{color:var(--green)}
+  details.lead .names span{border-color:rgba(61,220,151,.35)}
 
   .who{margin-top:20px;border-top:1px solid var(--line);padding-top:8px}
   details{border-bottom:1px solid var(--line)}
@@ -103,6 +109,8 @@
   footer{text-align:center;color:var(--muted);font-size:13px;margin-top:36px}
   footer .fun{color:var(--gold);font-style:italic;font-size:16px}
   .previewnote{text-align:center;font-size:12px;color:var(--gold);opacity:.85;margin-bottom:14px}
+  .revealnote{text-align:center;font-size:13px;color:var(--muted);margin:0 auto 20px;max-width:460px;
+    background:#0f1621;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
   @media(max-width:560px){.wrap{padding:32px 14px 60px}.teasers{grid-template-columns:1fr}h1{font-size:24px}}
 </style>
 </head>
@@ -128,6 +136,7 @@
 
   <div id="reveal" style="display:none">
     <div class="previewnote" id="pvnote" style="display:none">Preview mode &middot; not yet public</div>
+    <div class="revealnote" id="wnote">&#127942; Everyone's picks are in &middot; winners revealed after the final</div>
     <div class="tabs" id="tabs"></div>
     <div id="pots"></div>
     <div style="text-align:center"><a class="back" href="index.html">&#8592; Back to games</a></div>
@@ -138,9 +147,10 @@
 
 <script>
 /* ============ CONFIG ============ */
-// Page auto-unlocks at this moment (local time). Day after the WC 2026 final.
-const REVEAL_AT = new Date("2026-07-20T12:00:00");
-// To PREVIEW before then, open the page with ?reveal=1 in the URL.
+// PICKS ARE LIVE NOW. To hide picks behind a countdown again, set this to a
+// FUTURE date (e.g. "2026-07-20T12:00:00") and the locked countdown returns.
+const REVEAL_AT = new Date("2026-06-01T00:00:00");   // in the past = show picks now
+// Winners are still gated on the result below (WINNER), shown as "awaiting result".
 
 // Buy-in per sidepot (in rupees). null = not yet set (pot shows "TBD").
 const BUYIN = { boot:100, ball:100, glove:50, winner:100 };
@@ -223,20 +233,25 @@ function renderPot(k,on){
     banner='<div class="banner pending"><div class="bt">&#8987; Awaiting result</div>'+
       '<div class="bd">Winner decided after the final. '+n+' predictions in.</div></div>';
   }
+  // leader = top pick while no winner is decided yet
+  const leadC = (!win && picked.length) ? picked[0] : null;
   // bars
   const bars=picked.map(c=>{
-    const won=win===c;
-    return '<div class="row'+(won?" won":"")+'"><div class="rtop"><span class="rname">'+esc(c)+
-      (won?'<span class="wontag">Won</span>':'')+'</span><span class="rcount">'+cnt[c]+
+    const won=win===c, lead=c===leadC;
+    const tag = won?'<span class="wontag">Won</span>' : (lead?'<span class="leadtag">Leading</span>':'');
+    return '<div class="row'+(won?" won":(lead?" lead":""))+'"><div class="rtop"><span class="rname">'+esc(c)+
+      tag+'</span><span class="rcount">'+cnt[c]+
       ' &middot; '+Math.round(cnt[c]/n*100)+'%</span></div>'+
       '<div class="track"><div class="fill" style="width:'+(cnt[c]/max*100)+'%"></div></div></div>';
   }).join("");
-  // who picked whom (grouped)
+  // who picked whom (grouped) — front-runner list opens by default
   const groups=picked.map(c=>{
     const names=p.voters.filter(v=>v.pick===c).map(v=>v.name).sort((a,b)=>a.toLowerCase()<b.toLowerCase()?-1:1);
-    const won=win===c;
-    return '<details'+(won?' class="won" open':'')+'><summary><span>'+esc(c)+
-      (won?' ✓':'')+'</span><span class="cnt">'+names.length+'</span></summary>'+
+    const won=win===c, lead=c===leadC;
+    const cls = won?' class="won" open' : (lead?' class="lead" open':'');
+    const mark = won?' ✓' : (lead?' &middot; leading':'');
+    return '<details'+cls+'><summary><span>'+esc(c)+
+      mark+'</span><span class="cnt">'+names.length+'</span></summary>'+
       '<div class="names">'+names.map(x=>'<span>'+esc(x)+'</span>').join("")+'</div></details>';
   }).join("");
   const potChip=pot!=null?INR(pot):"TBD";
