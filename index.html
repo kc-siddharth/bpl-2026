@@ -36,6 +36,8 @@
 
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
   .grid.feat{grid-template-columns:1fr}
+  .grid.trio{grid-template-columns:repeat(2,1fr)}
+  .grid.trio .wide{grid-column:1 / -1}
   .card{display:flex;flex-direction:column;background:linear-gradient(165deg,var(--panel),var(--panel2));
     border:1px solid var(--line);border-radius:16px;padding:22px 22px 18px;text-decoration:none;color:inherit;
     transition:transform .15s ease,border-color .15s ease;position:relative;overflow:hidden}
@@ -77,19 +79,26 @@
   </header>
 
   <div class="sechead fresh">Just added</div>
-  <div class="grid feat">
-    <a class="card new" href="tournament_wrapped.html">
+  <div class="grid trio">
+    <a class="card new wide" href="tournament_wrapped.html">
       <div class="cic">🎬</div>
       <div class="chead"><h2>Tournament Wrapped</h2><span class="pill new">★ New</span></div>
       <p>The whole World Cup in data — how the group stage and the knockouts split the room, your own card, and what your personality did to your wallet. Pick your name.</p>
       <div class="cgo">Open ›</div>
     </a>
 
-    <a class="card new" href="flag-quiz.html">
-      <div class="cic">🚩</div>
-      <div class="chead"><h2>Flag Quiz</h2><span class="pill new">★ New</span></div>
-      <p>See the flag, name the nation. All 48 World Cup flags — one try each, and KC's rating out of 10 on every single one.</p>
-      <div class="cgo">Play ›</div>
+    <a class="card" href="net_winnings.html">
+      <div class="cic">💰</div>
+      <div class="chead"><h2>Net Winnings</h2><span class="pill new">★ New</span></div>
+      <p>The final tally. Every player's net winnings across the group stage, the knockouts and all four sidepots.</p>
+      <div class="cgo">Open ›</div>
+    </a>
+
+    <a class="card" href="demographics.html">
+      <div class="cic">👥</div>
+      <div class="chead"><h2>The Group in Data</h2><span class="pill new">★ New</span></div>
+      <p>Who actually played this thing. Age, jobs, football habits and spirit animals, and which type of player won the most.</p>
+      <div class="cgo">Open ›</div>
     </a>
   </div>
 
@@ -159,11 +168,11 @@
       <div class="cgo">Open ›</div>
     </a>
 
-    <a class="card" href="net_winnings.html">
-      <div class="cic">💰</div>
-      <div class="chead"><h2>Net Winnings</h2><span class="pill">Final</span></div>
-      <p>Every player's final net winnings across the group stage, knockouts and the four sidepots.</p>
-      <div class="cgo">Open ›</div>
+    <a class="card" href="flag-quiz.html">
+      <div class="cic">🚩</div>
+      <div class="chead"><h2>Flag Quiz</h2><span class="pill live">● Live</span></div>
+      <p>See the flag, name the nation. All 48 World Cup flags — one try each, and KC's rating out of 10 on every single one.</p>
+      <div class="cgo">Play ›</div>
     </a>
 
   </div>
